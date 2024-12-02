@@ -1,0 +1,16 @@
+[package]
+name = "Ethernaut"
+version = "0.1.0"
+authors = ["Your Name <your.email@example.com>"]
+
+[dependencies]
+MoveStdlib = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-framework/packages/move-stdlib", rev = "framework/devnet" }
+Sui = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/devnet" }
+
+[addresses]
+Ethernaut = "0x1"
+MoveStdlib = "0x2"
+
+# [dev-addresses]
+# Ethernaut = "0x1"
+

@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Private stuff
+client/.env
+contracts/.env
+
+# Client
+client/build/
+client/node_modules/
+client/src/gamedata/deploy.local.json
+.env
+
+# sui_contracts
+build/
