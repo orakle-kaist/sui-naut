@@ -72,7 +72,7 @@ function Home() {
           }}
           onClick={() => navigate("/challenge-2")}
         >
-          🧮 Challenge 2: babyMath
+          📈 Challenge 2: FlashLoan
         </Button>
 
         <Button
@@ -85,7 +85,7 @@ function Home() {
           }}
           onClick={() => navigate("/challenge-3")}
         >
-          📈 Challenge 3: flashLoan
+          🧮 Challenge 3: babyMath
         </Button>
 
         <Button
