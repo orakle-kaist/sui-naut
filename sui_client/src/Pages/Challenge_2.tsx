@@ -1,40 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { ConnectButton } from "@mysten/dapp-kit"; 
-import { useSignAndExecuteTransaction, useAccounts } from "@mysten/dapp-kit";
 import { useState } from "react";
-import { Transaction } from "@mysten/sui/transactions";
+
 
 function FlashLoanChallenge() {
-  const accounts = useAccounts();
   const navigate = useNavigate();
-  const { mutateAsync: signAndExecuteTransaction } = useSignAndExecuteTransaction();
   const [message, setMessage] = useState<string | null>(null);
 
-  const PACKAGE = "0x0c2e26b341c3e98162e9f05da304f2f313d5c9acbd696f9eda68c2102671bb86";
-
-  const createFlashLender = async () => {
-    if (!accounts || accounts.length === 0) {
-      setMessage("Please connect your wallet.");
-      return;
-    }
-
-    try {
-      const tx = new Transaction();
-      tx.moveCall({
-      target: `${PACKAGE}::flash::create_lend`,
-      arguments: [
-        // 버튼 클릭시 객체 생성해서 전달 //
-      ],
-    });
-
-      const result = await signAndExecuteTransaction({ transaction: tx, chain: "sui:localnet" });
-      setMessage(`FlashLender created successfully!`);
-      console.log(result);
-    } catch (error) {
-      setMessage("Failed to create FlashLender.");
-      console.error(error);
-    }
+  const handleSubmit = () => {
+    setMessage("FlashLoan Challenge submitted!"); // 제출 메시지 업데이트
   };
+  
+      
+
 
   return (
     <div
@@ -226,7 +204,7 @@ function FlashLoanChallenge() {
         }
       </pre>
       <button
-        onClick={createFlashLender}
+        onClick={handleSubmit}
         style={{
           backgroundColor: "#6C63FF",
           color: "#FFF",
@@ -237,7 +215,7 @@ function FlashLoanChallenge() {
           cursor: "pointer",
         }}
       >
-        Create FlashLender
+        Submit Challenge
       </button>
 
       {message && (
