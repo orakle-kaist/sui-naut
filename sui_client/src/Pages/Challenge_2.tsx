@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ConnectButton } from "@mysten/dapp-kit"; 
 import { useSignAndExecuteTransaction, useAccounts } from "@mysten/dapp-kit";
 import { useState } from "react";
+import { Transaction } from "@mysten/sui/transactions";
 
 function FlashLoanChallenge() {
   const accounts = useAccounts();
@@ -18,16 +19,13 @@ function FlashLoanChallenge() {
     }
 
     try {
-      const tx = {
-        packageObjectId: PACKAGE,
-        module: "flash",
-        function: "create_lend",
-        arguments: [
-          /* 대출 코인 객체 (미리 준비된 값 필요) */
-        ],
-        typeArguments: [],
-        gasBudget: 10000,
-      };
+      const tx = new Transaction();
+      tx.moveCall({
+      target: `${PACKAGE}::flash::create_lend`,
+      arguments: [
+        // 버튼 클릭시 객체 생성해서 전달 //
+      ],
+    });
 
       const result = await signAndExecuteTransaction({ transaction: tx, chain: "sui:localnet" });
       setMessage(`FlashLender created successfully!`);
