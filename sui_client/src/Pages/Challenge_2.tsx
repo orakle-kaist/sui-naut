@@ -3,18 +3,21 @@ import { ConnectButton } from "@mysten/dapp-kit";
 import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
+import Confetti from "react-confetti";
+import { useAtomValue } from "jotai";
+import { packageIdAtom } from "../atom";
 
 function FlashLoanChallenge() {
   const navigate = useNavigate();
   const [message, setMessage] = useState<string | null>(null);
-  const [packageId, setPackageId] = useState("");
+  const packageId = useAtomValue(packageIdAtom);
+  const [solutionPkgId, setSolutionPkgId] = useState("");
   const [module, setModule] = useState("");
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const goHome = () => {
     navigate("/");
   };
-  const PACKAGE =
-    "0x0c2e26b341c3e98162e9f05da304f2f313d5c9acbd696f9eda68c2102671bb86";
 
   const handleSubmit = async () => {
     const url = "http://127.0.0.1:9000";
@@ -25,9 +28,9 @@ function FlashLoanChallenge() {
       params: [
         {
           MoveModule: {
-            package: packageId,
+            package: solutionPkgId,
             module: module,
-            type: `${PACKAGE}::flash::Flag`,
+            type: `${packageId}::flash::Flag`,
           },
         },
         null,
@@ -48,6 +51,10 @@ function FlashLoanChallenge() {
       const data = await response.json();
       if (data?.result?.data?.[0]?.parsedJson?.flag) {
         setMessage("Your solution is correct!");
+        setShowConfetti(true);
+        setTimeout(() => {
+          window.scrollTo(0, document.body.scrollHeight);
+        }, 100);
       } else {
         setMessage("Solution is not correct.");
       }
@@ -70,6 +77,13 @@ function FlashLoanChallenge() {
         fontFamily: "'Inter', sans-serif",
       }}
     >
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={document.body.offsetHeight}
+          gravity={1}
+        />
+      )}
       <button
         onClick={goHome}
         style={{
@@ -259,8 +273,8 @@ module 0x0::flash{
           type="text"
           placeholder="Solution package id"
           style={{ padding: "0.75rem", borderRadius: "8px" }}
-          value={packageId}
-          onChange={(e) => setPackageId(e.target.value)}
+          value={solutionPkgId}
+          onChange={(e) => setSolutionPkgId(e.target.value)}
         />
         <input
           type="text"

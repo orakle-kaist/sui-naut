@@ -1,4 +1,4 @@
-export const buttonBaseStyle = {
+export const buttonBaseStyle: React.CSSProperties = {
   fontFamily: "Inter, sans-serif",
   backgroundColor: "#6C63FF",
   color: "#FFFFFF",

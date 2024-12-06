@@ -4,17 +4,20 @@ import {
   useSignAndExecuteTransaction,
   useAccounts,
   useSuiClient,
+  ConnectButton,
 } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
-import { ConnectButton } from "@mysten/dapp-kit";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Confetti from "react-confetti";
+import { useAtomValue } from "jotai";
+import { packageIdAtom } from "../atom";
 
 function Challenge_1() {
   const accounts = useAccounts();
   const navigate = useNavigate();
   const client = useSuiClient();
+  const packageId = useAtomValue(packageIdAtom);
 
   const { mutateAsync: signAndExecuteTransaction } =
     useSignAndExecuteTransaction({
@@ -37,9 +40,6 @@ function Challenge_1() {
     navigate("/");
   };
 
-  const PACKAGE =
-    "0xc30867e30d91063380ebe585a53de4914b4096c4c8dabd6b193c5f5191fafeb8";
-
   const createCounter = async () => {
     if (!accounts || accounts.length === 0) {
       setMessage("Please connect your wallet.");
@@ -49,12 +49,12 @@ function Challenge_1() {
     try {
       const tx = new Transaction();
       tx.moveCall({
-        target: `${PACKAGE}::Counter::create_object`,
+        target: `${packageId}::Counter::create_object`,
         arguments: [],
       });
 
       const result = await signAndExecuteTransaction({
-        transaction: tx,
+        transaction: tx as any,
         chain: "sui:localnet",
       });
 
@@ -90,12 +90,12 @@ function Challenge_1() {
     try {
       const tx = new Transaction();
       tx.moveCall({
-        target: `${PACKAGE}::Counter::validate_object`,
+        target: `${packageId}::Counter::validate_object`,
         arguments: [tx.object(counterId)], // Counter ID를 인자로 전달
       });
 
       await signAndExecuteTransaction({
-        transaction: tx,
+        transaction: tx as any,
         chain: "sui:localnet",
       });
 
@@ -124,7 +124,11 @@ function Challenge_1() {
       }}
     >
       {showConfetti && (
-        <Confetti width={window.innerWidth} height={window.innerHeight} />
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          gravity={1}
+        />
       )}
       <button
         onClick={goHome}

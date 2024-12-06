@@ -2,7 +2,7 @@
 
 [move]
 version = 3
-manifest_digest = "D3BF8C841D616BEBE5D94A27D5E943B511CE384C35EF53BA2A43A57F65CDF25C"
+manifest_digest = "D4878DD25E354E95F2B1720D58A3BF9DB85447186F20F37D9717E4F85D090691"
 deps_digest = "3C4103934B1E040BB6B23F1D610B4EF9F2F1166A50A104EADCF77467C004C600"
 dependencies = [
   { id = "MoveStdlib", name = "MoveStdlib" },
@@ -22,14 +22,14 @@ dependencies = [
 ]
 
 [move.toolchain-version]
-compiler-version = "1.35.0"
+compiler-version = "1.36.1"
 edition = "2024.beta"
 flavor = "sui"
 
 [env]
 
 [env.local]
-chain-id = "365815d7"
-original-published-id = "0xc30867e30d91063380ebe585a53de4914b4096c4c8dabd6b193c5f5191fafeb8"
-latest-published-id = "0xc30867e30d91063380ebe585a53de4914b4096c4c8dabd6b193c5f5191fafeb8"
+chain-id = "42cdc7ba"
+original-published-id = "0xf255c5cddf1812b88ab2b071dd09d0327ba0da8d8c2a76cc5b1f43d92168c9f7"
+latest-published-id = "0xf255c5cddf1812b88ab2b071dd09d0327ba0da8d8c2a76cc5b1f43d92168c9f7"
 published-version = "1"

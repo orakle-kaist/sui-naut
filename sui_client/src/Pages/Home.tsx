@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { Container, Heading, Button, Flex } from "@radix-ui/themes";
+import { Container, Heading, Flex } from "@radix-ui/themes";
 import {
   buttonBaseStyle,
   buttonHoverStyle,
   buttonDefaultStyle,
 } from "../styles/buttonStyles";
 import { ConnectButton } from "@mysten/dapp-kit"; // DAppProvider 추가
+import { useAtom } from "jotai";
+import { packageIdAtom } from "../atom";
 
 function Home() {
   const navigate = useNavigate();
+  const [packageId, setPackageId] = useAtom(packageIdAtom);
 
   return (
     <Container
@@ -33,7 +36,23 @@ function Home() {
       >
         The Suinaut 🚀
       </Heading>
-      <ConnectButton /> {/* 상단에 지갑 연결 UI 추가 */}
+      <div
+        style={{
+          margin: "2rem 0",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "row",
+        }}
+      >
+        <ConnectButton /> {/* TODO: 상단에 지갑 연결 UI 추가 */}
+        <input
+          type="text"
+          placeholder="Enter the published package ID"
+          style={{ marginLeft: "1rem" }}
+          onChange={(e) => setPackageId(e.target.value)}
+          value={packageId}
+        />
+      </div>
       <p
         style={{
           fontFamily: "Inter, sans-serif",
@@ -51,7 +70,7 @@ function Home() {
           gap: "1.5rem",
         }}
       >
-        <Button
+        <button
           style={buttonBaseStyle}
           onMouseOver={(e) => {
             Object.assign(e.currentTarget.style, buttonHoverStyle);
@@ -62,9 +81,9 @@ function Home() {
           onClick={() => navigate("/challenge-1")}
         >
           🔢 Challenge 1: Counter
-        </Button>
+        </button>
 
-        <Button
+        <button
           style={buttonBaseStyle}
           onMouseOver={(e) => {
             Object.assign(e.currentTarget.style, buttonHoverStyle);
@@ -75,7 +94,9 @@ function Home() {
           onClick={() => navigate("/challenge-2")}
         >
           💸 Challenge 2: FlashLoan
-        </Button>
+        </button>
+
+        <div style={buttonBaseStyle}>Coming Soon...</div>
       </Flex>
     </Container>
   );
