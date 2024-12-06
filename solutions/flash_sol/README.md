@@ -13,13 +13,13 @@ export LENDER=0x...
 ```
 
 3. `cd` to this directory and follow below steps.
-```
+```bash
 sui client publish . --gas-budget 100000000 --skip-dependency-verification
 export SOLUTION_ADDRESS=0x...
 ```
 
 4. Call the solution contract.
-```
+```bash
 sui client call --json --gas-budget 1000000000 --package $SOLUTION_ADDRESS --module sol --function main --args $LENDER
 ```
 
