@@ -4,21 +4,13 @@ import { useState } from "react";
 
 function FlashLoanChallenge() {
   const navigate = useNavigate();
-<<<<<<< HEAD
-
-  const [message, setMessage] = useState<string | null>(null);
-  
-  const goHome = () => {
-    navigate("/");
-  };
-  
-  const handleSubmit = () => {
-    setMessage("FlashLoan Challenge submitted!"); // 제출 메시지 업데이트
-=======
   const [message, setMessage] = useState<string | null>(null);
   const [packageId, setPackageId] = useState("");
   const [module, setModule] = useState("");
 
+  const goHome = () => {
+    navigate("/");
+  };
   const PACKAGE =
     "0x0c2e26b341c3e98162e9f05da304f2f313d5c9acbd696f9eda68c2102671bb86";
 
@@ -60,7 +52,6 @@ function FlashLoanChallenge() {
     } catch (error) {
       setMessage("Solution is not correct.");
     }
->>>>>>> 41279e88fe766338df7c0a0ac7ec13181352a135
   };
 
   return (
