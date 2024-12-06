@@ -1,9 +1,11 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container, Heading, Button, Flex } from "@radix-ui/themes";
-import { buttonBaseStyle, buttonHoverStyle, buttonDefaultStyle } from "../styles/buttonStyles";
+import {
+  buttonBaseStyle,
+  buttonHoverStyle,
+  buttonDefaultStyle,
+} from "../styles/buttonStyles";
 import { ConnectButton } from "@mysten/dapp-kit"; // DAppProvider 추가
-
 
 function Home() {
   const navigate = useNavigate();
@@ -72,33 +74,7 @@ function Home() {
           }}
           onClick={() => navigate("/challenge-2")}
         >
-          🧮 Challenge 2: babyMath
-        </Button>
-
-        <Button
-          style={buttonBaseStyle}
-          onMouseOver={(e) => {
-            Object.assign(e.currentTarget.style, buttonHoverStyle);
-          }}
-          onMouseOut={(e) => {
-            Object.assign(e.currentTarget.style, buttonDefaultStyle);
-          }}
-          onClick={() => navigate("/challenge-3")}
-        >
-          📈 Challenge 3: flashLoan
-        </Button>
-
-        <Button
-          style={buttonBaseStyle}
-          onMouseOver={(e) => {
-            Object.assign(e.currentTarget.style, buttonHoverStyle);
-          }}
-          onMouseOut={(e) => {
-            Object.assign(e.currentTarget.style, buttonDefaultStyle);
-          }}
-          onClick={() => navigate("/challenge-4")}
-        >
-          🧨 Challenge 4: Bomb
+          💸 Challenge 2: FlashLoan
         </Button>
       </Flex>
     </Container>
@@ -106,4 +82,3 @@ function Home() {
 }
 
 export default Home;
-

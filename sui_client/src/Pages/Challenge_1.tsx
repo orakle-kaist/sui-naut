@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useSignAndExecuteTransaction,
@@ -61,7 +61,7 @@ function Challenge_1() {
       console.log(result);
 
       const newCounterId = result.objectChanges?.find(
-        (change) => change.type === "created"
+        (change) => change.type === "created",
       )?.objectId;
 
       if (newCounterId) {
@@ -123,7 +123,9 @@ function Challenge_1() {
         position: "relative",
       }}
     >
-      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+      {showConfetti && (
+        <Confetti width={window.innerWidth} height={window.innerHeight} />
+      )}
       <button
         onClick={goHome}
         style={{
@@ -142,13 +144,11 @@ function Challenge_1() {
         }}
         onMouseOver={(e) => {
           e.currentTarget.style.transform = "scale(1.05)";
-          e.currentTarget.style.boxShadow =
-            "0px 6px 12px rgba(0, 0, 0, 0.15)";
+          e.currentTarget.style.boxShadow = "0px 6px 12px rgba(0, 0, 0, 0.15)";
         }}
         onMouseOut={(e) => {
           e.currentTarget.style.transform = "scale(1)";
-          e.currentTarget.style.boxShadow =
-            "0px 4px 8px rgba(0, 0, 0, 0.1)";
+          e.currentTarget.style.boxShadow = "0px 4px 8px rgba(0, 0, 0, 0.1)";
         }}
       >
         🏠 Home
@@ -239,7 +239,7 @@ function Challenge_1() {
             transition: "transform 0.2s ease, box-shadow 0.2s ease",
           }}
         >
-          Validate Object
+          Submit Challenge
         </button>
       </div>
       {message && (
@@ -247,9 +247,7 @@ function Challenge_1() {
           style={{
             marginTop: "2rem",
             backgroundColor: "#1E1E2F",
-            color: message === "Validation complete!"
-              ? "#A3E635"
-              : "#F7768E",
+            color: message === "Validation complete!" ? "#A3E635" : "#F7768E",
             padding: "1rem",
             borderRadius: "8px",
             textAlign: "center",
@@ -265,4 +263,3 @@ function Challenge_1() {
 }
 
 export default Challenge_1;
-
