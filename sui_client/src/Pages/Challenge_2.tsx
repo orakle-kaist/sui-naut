@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { ConnectButton } from "@mysten/dapp-kit";
 import { useState } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 function FlashLoanChallenge() {
   const navigate = useNavigate();
@@ -90,21 +92,21 @@ function FlashLoanChallenge() {
         💸 Flash Loan Challenge
       </h1>
       <ConnectButton />
-      <pre
+      <h3 style={{ marginTop: "1rem", color: "#A3E635" }}>
+        Try to emit the flag while the balance of FlashLender is 0.
+      </h3>
+      <div
         style={{
           backgroundColor: "#1E1E2F",
           padding: "1.5rem",
           borderRadius: "12px",
           width: "100%",
           maxWidth: "800px",
-          lineHeight: "1.6",
-          overflowX: "auto",
           fontFamily: "'Fira Code', monospace",
-          color: "#AAB2D0",
-          fontSize: "12px",
         }}
       >
-        {`
+        <SyntaxHighlighter language="rust" style={tomorrow}>
+          {`
 module 0x0::flash{
 
     use sui::transfer;
@@ -241,7 +243,8 @@ module 0x0::flash{
 }
 
   `}
-      </pre>
+        </SyntaxHighlighter>
+      </div>
       <div
         style={{
           marginTop: "2rem",
@@ -269,13 +272,14 @@ module 0x0::flash{
         <button
           onClick={handleSubmit}
           style={{
-            backgroundColor: "#6C63FF",
+            backgroundColor: "#FF6347",
             color: "#FFF",
             padding: "0.75rem 1.5rem",
             borderRadius: "8px",
             fontWeight: "600",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             cursor: "pointer",
+            transition: "transform 0.2s ease, box-shadow 0.2s ease",
           }}
         >
           Submit Challenge
