@@ -5,8 +5,13 @@ import { useState } from "react";
 
 function FlashLoanChallenge() {
   const navigate = useNavigate();
-  const [message, setMessage] = useState<string | null>(null);
 
+  const [message, setMessage] = useState<string | null>(null);
+  
+  const goHome = () => {
+    navigate("/");
+  };
+  
   const handleSubmit = () => {
     setMessage("FlashLoan Challenge submitted!"); // 제출 메시지 업데이트
   };
@@ -29,7 +34,7 @@ function FlashLoanChallenge() {
       }}
     >
       <button
-        onClick={() => navigate("/")}
+        onClick={(goHome) }
         style={{
           position: "absolute",
           top: "10px",
