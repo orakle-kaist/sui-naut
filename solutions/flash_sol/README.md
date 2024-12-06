@@ -6,7 +6,7 @@ MoveStdlib = "0x2"
 ```
 
 2. When deployed Suinaut package, object of type FlashLender is created. Find the object id and alias
-```
+```bash
 export LENDER=0x...
 ```
 
@@ -22,7 +22,7 @@ sui client call --json --gas-budget 1000000000 --package $SOLUTION_ADDRESS --mod
 ```
 
 5. From the output, check if the flag is true
-```
+```json
   "events": [
     {
       "id": {
