@@ -104,7 +104,8 @@ module 0x0::flash{
         if (vec_map::contains(&self.lender, &sender)) {
             let balance = vec_map::get_mut(&mut self.lender, &sender);
             *balance = *balance + coin::value(&coin);
-        }else {
+        }
+        else {
             vec_map::insert(&mut self.lender, sender, coin::value(&coin));
         };
         coin::put(&mut self.to_lend, coin);
