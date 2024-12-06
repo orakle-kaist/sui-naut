@@ -1,34 +1,44 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSignAndExecuteTransaction, useAccounts } from "@mysten/dapp-kit";
+import {
+  useSignAndExecuteTransaction,
+  useAccounts,
+  useSuiClient,
+} from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
-import { parseTransactionEffects } from "../utils";
 import { ConnectButton } from "@mysten/dapp-kit"; // DAppProvider 추가
 
 function Challenge_1() {
   const accounts = useAccounts();
   const navigate = useNavigate();
+  const client = useSuiClient();
 
-  const { mutateAsync: signAndExecuteTransaction } = useSignAndExecuteTransaction();
+  const { mutateAsync: signAndExecuteTransaction } =
+    useSignAndExecuteTransaction({
+      execute: async ({ bytes, signature }) =>
+        await client.executeTransactionBlock({
+          transactionBlock: bytes,
+          signature,
+          options: {
+            showRawEffects: true,
+            showObjectChanges: true,
+          },
+        }),
+    });
   const [message, setMessage] = useState<string | null>(null);
 
   const goHome = () => {
     navigate("/");
   };
 
-  const PACKAGE = "0x53fb0bdca605ba3883d72f012ffd07022501c9db0f58376829918a7317c12f1b";
+  const PACKAGE =
+    "0x73361ea8b1b2f743c8140657ea4dbd45e7a7a68fde14ee357aa508d1c0d00f3c";
 
   const createCounter = async () => {
     if (!accounts || accounts.length === 0) {
       setMessage("Please connect your wallet.");
       return;
     }
-
-    // Step 4: 테스트 및 결과 확인
-    const sampleBase64 =
-      "AQD2AAAAAAAAAEBCDwAAAAAAcNUjAAAAAADI7A4AAAAAAJgmAAAAAAAAIEnTgvn0NQv9Q/r5wS7CRxY4z6S1gSwn3cx6b2a9TkxxAQAAAAAAAiAwn3PXoslObtFFsBYxY4PO8VH/PmtRkEm0DvaBx4iJZCCELzYturLfVALfO7w6gmRapm3Ic+KAP8c1dluhWf71giwAAAAAAAAAAgf0uSCJorZZ+oCYNwZSaGKHd0LCM1JSKPCBfihPLFjbASsAAAAAAAAAID9NJ6Ram8OcsQCmNTuIV3d2nmaaQHIHdDvwCCnnrvr2ALMIeYehdp+oU/XSvd6tZBTKSw9/F8H4kyk373QQ3LvFASA7whNFu06hRmhIyvlQtJmq+a4/xMsDwBUqMwoyNKAX3wCzCHmHoXafqFP10r3erWQUyksPfxfB+JMpN+90ENy7xQBYJN3UQejHe5atEjVswgobtABYW843qs37CE+/uwCo7QABIMcuElcLnHYCVbk0FVs2DaXBJ/hVydNpJjLxBwaGXxKcALMIeYehdp+oU/XSvd6tZBTKSw9/F8H4kyk373QQ3LvFAQAA";
-    const result = parseTransactionEffects(sampleBase64);
-    console.log(result);
 
     try {
       const tx = new Transaction();
@@ -42,14 +52,14 @@ function Challenge_1() {
         chain: "sui:localnet",
       });
 
-      console.log(result);
-
-      const newCounterId = result.effects?.created?.[0]?.reference?.objectId;
+      const newCounterId = result.objectChanges?.find(
+        (change) => change.type === "created",
+      )?.objectId;
 
       setMessage(
         newCounterId
           ? `Counter created successfully! ID: ${newCounterId} `
-          : "Failed to create Counter."
+          : "Failed to create Counter.",
       );
     } catch (error) {
       setMessage("Transaction failed.");
@@ -71,7 +81,6 @@ function Challenge_1() {
         fontFamily: "'Inter', sans-serif",
       }}
     >
-
       <button
         onClick={goHome}
         style={{
@@ -99,12 +108,10 @@ function Challenge_1() {
       >
         🏠 Home
       </button>
-
       <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem", color: "#FFF" }}>
         🔢 Challenge 1: Counter Management
       </h1>
       <ConnectButton /> {/* 상단에 지갑 연결 UI 추가 */}
-
       <pre
         style={{
           backgroundColor: "#1E1E2F",
@@ -116,11 +123,10 @@ function Challenge_1() {
           overflowX: "auto",
           fontFamily: "'Fira Code', monospace",
           color: "#AAB2D0",
-          fontSize: "12px"
+          fontSize: "12px",
         }}
       >
-        {
-          `
+        {`
     module 0x0::Counter {
     use sui:: object:: { Self, UID };
     use sui:: tx_context:: { Self, TxContext };
@@ -174,10 +180,8 @@ function Challenge_1() {
       }
     }
   }
-  `
-        }
+  `}
       </pre>
-
       <div style={{ marginTop: "2rem", display: "flex", gap: "1rem" }}>
         <button
           onClick={createCounter}
@@ -203,7 +207,6 @@ function Challenge_1() {
           Create Counter
         </button>
       </div>
-
       {message && (
         <div
           style={{
