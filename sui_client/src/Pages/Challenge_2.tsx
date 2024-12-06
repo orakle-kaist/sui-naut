@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { ConnectButton } from "@mysten/dapp-kit"; 
+import { ConnectButton } from "@mysten/dapp-kit";
 import { useState } from "react";
-
 
 function FlashLoanChallenge() {
   const navigate = useNavigate();
+<<<<<<< HEAD
 
   const [message, setMessage] = useState<string | null>(null);
   
@@ -14,10 +14,54 @@ function FlashLoanChallenge() {
   
   const handleSubmit = () => {
     setMessage("FlashLoan Challenge submitted!"); // 제출 메시지 업데이트
-  };
-  
-      
+=======
+  const [message, setMessage] = useState<string | null>(null);
+  const [packageId, setPackageId] = useState("");
+  const [module, setModule] = useState("");
 
+  const PACKAGE =
+    "0x0c2e26b341c3e98162e9f05da304f2f313d5c9acbd696f9eda68c2102671bb86";
+
+  const handleSubmit = async () => {
+    const url = "http://127.0.0.1:9000";
+    const payload = {
+      jsonrpc: "2.0",
+      id: 1,
+      method: "suix_queryEvents",
+      params: [
+        {
+          MoveModule: {
+            package: packageId,
+            module: module,
+            type: `${PACKAGE}::flash::Flag`,
+          },
+        },
+        null,
+        3,
+        false,
+      ],
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      if (data?.result?.data?.[0]?.parsedJson?.flag) {
+        setMessage("Your solution is correct!");
+      } else {
+        setMessage("Solution is not correct.");
+      }
+    } catch (error) {
+      setMessage("Solution is not correct.");
+    }
+>>>>>>> 41279e88fe766338df7c0a0ac7ec13181352a135
+  };
 
   return (
     <div
@@ -66,15 +110,12 @@ function FlashLoanChallenge() {
           overflowX: "auto",
           fontFamily: "'Fira Code', monospace",
           color: "#AAB2D0",
-          fontSize: "12px"
+          fontSize: "12px",
         }}
       >
-        {
-          `
-    module 0x0::flash{
+        {`
+module 0x0::flash{
 
-    // use sui::object::{Self, UID};
-    // use std::vector;
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
     use sui::object::{Self, ID, UID};
@@ -98,6 +139,7 @@ function FlashLoanChallenge() {
         flash_lender_id: ID,
         amount: u64
     }
+
     #[allow(unused_field)]
     struct AdminCap has key, store {
         id: UID,
@@ -150,8 +192,8 @@ function FlashLoanChallenge() {
             witness, 
             2, 
             b"MY_COIN",
-			b"",
-			b"",
+            b"",
+            b"",
             option::none(),
             ctx
         );
@@ -164,7 +206,7 @@ function FlashLoanChallenge() {
         transfer::public_transfer(cap, owner);
     }
 
-    // get  the balance of FlashLender
+    // get the balance of FlashLender
     public fun balance(self: &mut FlashLender, ctx: &mut TxContext) :u64 {
         *vec_map::get(&self.lender, &tx_context::sender(ctx))
     }
@@ -177,7 +219,7 @@ function FlashLoanChallenge() {
         if (vec_map::contains(&self.lender, &sender)) {
             let balance = vec_map::get_mut(&mut self.lender, &sender);
             *balance = *balance + coin::value(&coin);
-        }else {
+        } else {
             vec_map::insert(&mut self.lender, sender, coin::value(&coin));
         };
         coin::put(&mut self.to_lend, coin);
@@ -205,30 +247,54 @@ function FlashLoanChallenge() {
         }
     }
 }
-  `
-        }
+  `}
       </pre>
-      <button
-        onClick={handleSubmit}
+      <div
         style={{
-          backgroundColor: "#6C63FF",
-          color: "#FFF",
-          padding: "0.75rem 1.5rem",
-          borderRadius: "8px",
-          fontWeight: "600",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-          cursor: "pointer",
+          marginTop: "2rem",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
         }}
       >
-        Submit Challenge
-      </button>
+        <input
+          type="text"
+          placeholder="Solution package id"
+          style={{ padding: "0.75rem", borderRadius: "8px" }}
+          value={packageId}
+          onChange={(e) => setPackageId(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Solution module name"
+          style={{ padding: "0.75rem", borderRadius: "8px" }}
+          value={module}
+          onChange={(e) => setModule(e.target.value)}
+        />
+        <button
+          onClick={handleSubmit}
+          style={{
+            backgroundColor: "#6C63FF",
+            color: "#FFF",
+            padding: "0.75rem 1.5rem",
+            borderRadius: "8px",
+            fontWeight: "600",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            cursor: "pointer",
+          }}
+        >
+          Submit Challenge
+        </button>
+      </div>
 
       {message && (
         <div
           style={{
             marginTop: "2rem",
             backgroundColor: "#1E1E2F",
-            color: message.includes("successfully") ? "#A3E635" : "#F7768E",
+            color: message.includes("is correct") ? "#A3E635" : "#F7768E",
             padding: "1rem",
             borderRadius: "8px",
             textAlign: "center",

@@ -1,7 +1,5 @@
 module 0x0::flash{
 
-    // use sui::object::{Self, UID};
-    // use std::vector;
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
     use sui::object::{Self, ID, UID};
@@ -25,6 +23,7 @@ module 0x0::flash{
         flash_lender_id: ID,
         amount: u64
     }
+
     #[allow(unused_field)]
     struct AdminCap has key, store {
         id: UID,
