@@ -69,7 +69,7 @@ function FlashLoanChallenge() {
       }}
     >
       <button
-        onClick={(goHome) }
+        onClick={(goHome)}
         style={{
           position: "absolute",
           top: "10px",
