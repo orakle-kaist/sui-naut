@@ -76,8 +76,8 @@ module 0x0::flash{
             witness, 
             2, 
             b"MY_COIN",
-			b"",
-			b"",
+            b"",
+            b"",
             option::none(),
             ctx
         );
@@ -115,7 +115,7 @@ module 0x0::flash{
         self: &mut FlashLender,
         amount: u64,
         ctx: &mut TxContext
-    ){
+    ) {
         let owner = tx_context::sender(ctx);
         let balance = vec_map::get_mut(&mut self.lender, &owner);
         assert!(*balance >= amount, 0);

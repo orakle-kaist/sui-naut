@@ -69,7 +69,7 @@ function FlashLoanChallenge() {
       }}
     >
       <button
-        onClick={(goHome)}
+        onClick={goHome}
         style={{
           position: "absolute",
           top: "10px",
@@ -222,7 +222,7 @@ module 0x0::flash{
         self: &mut FlashLender,
         amount: u64,
         ctx: &mut TxContext
-    ){
+    ) {
         let owner = tx_context::sender(ctx);
         let balance = vec_map::get_mut(&mut self.lender, &owner);
         assert!(*balance >= amount, 0);
