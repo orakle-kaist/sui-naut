@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useSignAndExecuteTransaction,
@@ -6,7 +6,10 @@ import {
   useSuiClient,
 } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
-import { ConnectButton } from "@mysten/dapp-kit"; // DAppProvider 추가
+import { ConnectButton } from "@mysten/dapp-kit";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
+import Confetti from "react-confetti";
 
 function Challenge_1() {
   const accounts = useAccounts();
@@ -25,14 +28,17 @@ function Challenge_1() {
           },
         }),
     });
+
   const [message, setMessage] = useState<string | null>(null);
+  const [counterId, setCounterId] = useState<string | null>(null); // Counter ID 저장
+  const [showConfetti, setShowConfetti] = useState(false); // 폭죽 효과 상태
 
   const goHome = () => {
     navigate("/");
   };
 
   const PACKAGE =
-    "0x73361ea8b1b2f743c8140657ea4dbd45e7a7a68fde14ee357aa508d1c0d00f3c";
+    "0xc30867e30d91063380ebe585a53de4914b4096c4c8dabd6b193c5f5191fafeb8";
 
   const createCounter = async () => {
     if (!accounts || accounts.length === 0) {
@@ -52,17 +58,52 @@ function Challenge_1() {
         chain: "sui:localnet",
       });
 
+      console.log(result);
+
       const newCounterId = result.objectChanges?.find(
-        (change) => change.type === "created",
+        (change) => change.type === "created"
       )?.objectId;
 
-      setMessage(
-        newCounterId
-          ? `Counter created successfully! ID: ${newCounterId} `
-          : "Failed to create Counter.",
-      );
+      if (newCounterId) {
+        setCounterId(newCounterId);
+        setMessage(`Counter created successfully! ID: ${newCounterId}`);
+      } else {
+        setMessage("Failed to create Counter.");
+      }
     } catch (error) {
       setMessage("Transaction failed.");
+      console.error(error);
+    }
+  };
+
+  const validateObject = async () => {
+    if (!accounts || accounts.length === 0) {
+      setMessage("Please connect your wallet.");
+      return;
+    }
+
+    if (!counterId) {
+      setMessage("No Counter ID available to validate.");
+      return;
+    }
+
+    try {
+      const tx = new Transaction();
+      tx.moveCall({
+        target: `${PACKAGE}::Counter::validate_object`,
+        arguments: [tx.object(counterId)], // Counter ID를 인자로 전달
+      });
+
+      await signAndExecuteTransaction({
+        transaction: tx,
+        chain: "sui:localnet",
+      });
+
+      setMessage("Validation complete!"); // 성공 메시지
+      setShowConfetti(true); // 폭죽 효과 시작
+      setTimeout(() => setShowConfetti(false), 3000); // 3초 후 폭죽 제거
+    } catch (error) {
+      setMessage("Validation failed.");
       console.error(error);
     }
   };
@@ -79,8 +120,10 @@ function Challenge_1() {
         justifyContent: "center",
         padding: "2rem",
         fontFamily: "'Inter', sans-serif",
+        position: "relative",
       }}
     >
+      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
       <button
         onClick={goHome}
         style={{
@@ -99,11 +142,13 @@ function Challenge_1() {
         }}
         onMouseOver={(e) => {
           e.currentTarget.style.transform = "scale(1.05)";
-          e.currentTarget.style.boxShadow = "0px 6px 12px rgba(0, 0, 0, 0.15)";
+          e.currentTarget.style.boxShadow =
+            "0px 6px 12px rgba(0, 0, 0, 0.15)";
         }}
         onMouseOut={(e) => {
           e.currentTarget.style.transform = "scale(1)";
-          e.currentTarget.style.boxShadow = "0px 4px 8px rgba(0, 0, 0, 0.1)";
+          e.currentTarget.style.boxShadow =
+            "0px 4px 8px rgba(0, 0, 0, 0.1)";
         }}
       >
         🏠 Home
@@ -111,77 +156,60 @@ function Challenge_1() {
       <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem", color: "#FFF" }}>
         🔢 Challenge 1: Counter Management
       </h1>
-      <ConnectButton /> {/* 상단에 지갑 연결 UI 추가 */}
-      <pre
+      <ConnectButton />
+      <h3 style={{ marginTop: "1rem", color: "#A3E635" }}>
+        Try to count more than 2 times.
+      </h3>
+      <div
         style={{
           backgroundColor: "#1E1E2F",
           padding: "1.5rem",
           borderRadius: "12px",
           width: "100%",
           maxWidth: "800px",
-          lineHeight: "1.6",
-          overflowX: "auto",
           fontFamily: "'Fira Code', monospace",
-          color: "#AAB2D0",
-          fontSize: "12px",
         }}
       >
-        {`
-    module 0x0::Counter {
-    use sui:: object:: { Self, UID };
-    use sui:: tx_context:: { Self, TxContext };
-    use sui:: transfer;
-    use sui:: event;
+        <SyntaxHighlighter language="rust" style={tomorrow}>
+          {`module 0x0::Counter {
+    use sui::object::{Self, UID};
+    use sui::tx_context::{Self, TxContext};
+    use sui::transfer;
+    use sui::event;
 
-    /// Counter Struct
     struct Counter has key {
         id: UID,
-          count: u64,
+        count: u64,
     }
 
-    /// Event to emit the counter value
     struct CountEvent has copy, drop {
         value: u64,
     }
 
-    /// Increment the counter
-    entry fun increment(counter: & mut Counter) {
+    entry fun increment(counter: &mut Counter) {
         counter.count = counter.count + 1;
-      }
-
-    /// Get the current counter value (emit an event)
-    entry fun get_count(counter: & Counter, _ctx: & TxContext) {
-        event:: emit(CountEvent { value: counter.count });
-      }
-
-    /// Event emitted for validation success
-    struct ValidationEvent has copy, drop {
-        message: vector<u8>, // Example message like "pass"
     }
 
-    /// Create a new Counter object and transfer ownership to the sender
-    entry fun create_object(ctx: & mut TxContext) {
+    entry fun get_count(counter: &Counter, _ctx: &TxContext) {
+        event::emit(CountEvent { value: counter.count });
+    }
+
+    entry fun create_object(ctx: &mut TxContext) {
         let counter = Counter {
-          id: object:: new(ctx),
+            id: object::new(ctx),
             count: 0,
         };
-      transfer:: transfer(counter, tx_context:: sender(ctx));
+        transfer::transfer(counter, tx_context::sender(ctx));
     }
 
-    /// Validate the Counter object
-    entry fun validate_object(counter: & Counter, _ctx: & TxContext) {
-      if (counter.count > 5) {
-        event:: emit(ValidationEvent { message: b"pass" });
-      } else {
-        event:: emit(ValidationEvent { message: b"fail, count must be greater than 5" });
-        /*
-        abort 1 // Validation failed
-        */
-      }
+    entry fun validate_object(counter: &Counter, _ctx: &TxContext) {
+        if (counter.count > 2) {
+            event::emit(CountEvent { value: counter.count });
+        }
     }
-  }
-  `}
-      </pre>
+}`}
+        </SyntaxHighlighter>
+      </div>
       <div style={{ marginTop: "2rem", display: "flex", gap: "1rem" }}>
         <button
           onClick={createCounter}
@@ -195,16 +223,23 @@ function Challenge_1() {
             cursor: "pointer",
             transition: "transform 0.2s ease, box-shadow 0.2s ease",
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.05)";
-            e.currentTarget.style.boxShadow = "0 6px 8px rgba(0, 0, 0, 0.15)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-            e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
-          }}
         >
           Create Counter
+        </button>
+        <button
+          onClick={validateObject}
+          style={{
+            backgroundColor: "#FF6347",
+            color: "#FFF",
+            padding: "0.75rem 1.5rem",
+            borderRadius: "8px",
+            fontWeight: "600",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            cursor: "pointer",
+            transition: "transform 0.2s ease, box-shadow 0.2s ease",
+          }}
+        >
+          Validate Object
         </button>
       </div>
       {message && (
@@ -212,7 +247,9 @@ function Challenge_1() {
           style={{
             marginTop: "2rem",
             backgroundColor: "#1E1E2F",
-            color: message.includes("successfully") ? "#A3E635" : "#F7768E",
+            color: message === "Validation complete!"
+              ? "#A3E635"
+              : "#F7768E",
             padding: "1rem",
             borderRadius: "8px",
             textAlign: "center",
@@ -228,3 +265,4 @@ function Challenge_1() {
 }
 
 export default Challenge_1;
+

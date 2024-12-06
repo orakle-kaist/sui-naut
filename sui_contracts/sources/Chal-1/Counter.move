@@ -41,7 +41,7 @@ module 0x0::Counter {
 
     /// Validate the Counter object
     entry fun validate_object(counter: &Counter, _ctx: &TxContext) {
-        if (counter.count > 5) {
+        if (counter.count > 2) {
             event::emit(ValidationEvent { message: b"pass" });
         } else {
             event::emit(ValidationEvent { message: b"fail, count must be greater than 5" });
