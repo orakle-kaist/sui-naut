@@ -1,5 +1,5 @@
 [package]
-name = "Ethernaut"
+name = "Suinaut"
 version = "0.1.0"
 authors = ["Your Name <your.email@example.com>"]
 
@@ -8,9 +8,9 @@ MoveStdlib = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-f
 Sui = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/devnet" }
 
 [addresses]
-Ethernaut = "0x1"
+Suinaut = "0x1"
 MoveStdlib = "0x2"
 
 # [dev-addresses]
-# Ethernaut = "0x1"
+# Suinaut = "0x1"
 

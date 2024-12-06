@@ -120,8 +120,7 @@ function FlashLoanChallenge() {
         }}
       >
         <SyntaxHighlighter language="rust" style={tomorrow}>
-          {`
-module 0x0::flash{
+          {`module Suinaut::flash{
 
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};

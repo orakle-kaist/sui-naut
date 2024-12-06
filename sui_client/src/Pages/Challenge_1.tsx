@@ -175,7 +175,7 @@ function Challenge_1() {
         }}
       >
         <SyntaxHighlighter language="rust" style={tomorrow}>
-          {`module 0x0::Counter {
+          {`module Suinaut::Counter {
     use sui::object::{Self, UID};
     use sui::tx_context::{Self, TxContext};
     use sui::transfer;

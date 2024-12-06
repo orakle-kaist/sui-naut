@@ -1,4 +1,4 @@
-module Ethernaut::flash{
+module Suinaut::flash{
 
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
