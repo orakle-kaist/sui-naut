@@ -1,5 +1,7 @@
 1. Change the address of Suinaut to the address of deployed package in `Move.toml`. [Location](https://github.com/orakle-kaist/sui-naut/blob/c2b8a8dc5c532053facd5216f391be88073c8176/sui_contracts/Move.toml#L11)
 ```toml
+# sui_contracts/Move.toml
+
 [addresses]
 Suinaut = 0x...
 MoveStdlib = "0x2"
