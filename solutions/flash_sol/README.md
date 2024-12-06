@@ -1,27 +1,27 @@
-1. Change the address of Suinaut to the address of deployed package. [Location](https://github.com/orakle-kaist/sui-naut/blob/c2b8a8dc5c532053facd5216f391be88073c8176/sui_contracts/Move.toml#L11)
+1. Change the address of Suinaut to the address of deployed package in `Move.toml`. [Location](https://github.com/orakle-kaist/sui-naut/blob/c2b8a8dc5c532053facd5216f391be88073c8176/sui_contracts/Move.toml#L11)
 ```toml
 [addresses]
 Suinaut = 0x...
 MoveStdlib = "0x2"
 ```
 
-2. When deployed Suinaut package, object of type FlashLender is created. Find the object id and alias
+2. When you deployed Suinaut package, object of type `${PACKAGE_ADDRESS}::flash::FlashLender` was created. Find the object id and alias as below.
 ```bash
 export LENDER=0x...
 ```
 
-3. cd to this directory and follow below steps
+3. `cd` to this directory and follow below steps.
 ```
 sui client publish . --gas-budget 100000000 --skip-dependency-verification
 export SOLUTION_ADDRESS=0x...
 ```
 
-4. Call the solution contract
+4. Call the solution contract.
 ```
 sui client call --json --gas-budget 1000000000 --package $SOLUTION_ADDRESS --module sol --function main --args $LENDER
 ```
 
-5. From the output, check if the flag is true
+5. From the output, check if the flag is `true`,
 ```json
   "events": [
     {
@@ -41,4 +41,4 @@ sui client call --json --gas-budget 1000000000 --package $SOLUTION_ADDRESS --mod
     }
   ],
 ```
-or submit the solution package id(`0xd6...` above) and module name(`sol` above) into the frontend page
+or submit the solution package id(`0xd6...` above) and module name(`sol` above) into the frontend page.
