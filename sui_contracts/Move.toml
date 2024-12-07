@@ -8,7 +8,7 @@ MoveStdlib = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-f
 Sui = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/devnet" }
 
 [addresses]
-Suinaut = "0x1" # TODO: Change this to the actual address
+Suinaut = "0x0" # TODO: Change this to the actual address
 MoveStdlib = "0x2"
 
 # [dev-addresses]
