@@ -1,10 +1,11 @@
-1. Change the address of Suinaut to the address of deployed package in `Move.toml`. [Location](https://github.com/orakle-kaist/sui-naut/blob/c2b8a8dc5c532053facd5216f391be88073c8176/sui_contracts/Move.toml#L11)
+1. Change the address of Suinaut to the address of deployed package in `sui_contracts/Move.toml`. [Location](https://github.com/orakle-kaist/sui-naut/blob/c2b8a8dc5c532053facd5216f391be88073c8176/sui_contracts/Move.toml)
 ```toml
 # sui_contracts/Move.toml
+[package]
+published-at= "0x..."
 
 [addresses]
-Suinaut = 0x...
-MoveStdlib = "0x2"
+Suinaut = "0x..."
 ```
 
 2. When you deployed Suinaut package, object of type `${PACKAGE_ADDRESS}::flash::FlashLender` was created. Find the object id and alias as below.
