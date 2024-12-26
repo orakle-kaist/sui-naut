@@ -14,7 +14,7 @@ export function OwnedObjects() {
   );
 
   if (!account) {
-    return;
+    return null;
   }
 
   if (error) {

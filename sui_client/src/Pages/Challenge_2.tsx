@@ -64,19 +64,15 @@ function FlashLoanChallenge() {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#121212",
-        color: "#FFFFFF",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "2rem",
-        fontFamily: "'Inter', sans-serif",
-      }}
-    >
+    <div className="bg-[#121212] 
+                    text-white 
+                    min-h-screen 
+                    flex 
+                    flex-col 
+                    items-center 
+                    justify-center 
+                    p-8 font-inter">
+
       {showConfetti && (
         <Confetti
           width={window.innerWidth}
@@ -86,39 +82,25 @@ function FlashLoanChallenge() {
       )}
       <button
         onClick={goHome}
-        style={{
-          position: "absolute",
-          top: "10px",
-          left: "10px",
-          padding: "10px 15px",
-          fontSize: "16px",
-          backgroundColor: "#4CAF50",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
+        className="absolute 
+                    top-2.5 
+                    left-2.5 
+                    px-4 py-2 
+                    text-lg 
+                    bg-green-500 
+                    text-white 
+                    rounded 
+                    cursor-pointer"
       >
         🏠 Home
       </button>
 
-      <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem", color: "#FFF" }}>
-        💸 Flash Loan Challenge
-      </h1>
+      <h1 className="text-4xl mb-4 font-bold">💸 Flash Loan Challenge</h1>
       <ConnectButton />
-      <h3 style={{ marginTop: "1rem", color: "#A3E635" }}>
+      <h3 className="text-2xl mt-4 font-bold text-green-400">
         Try to emit the flag while the balance of FlashLender is 0.
       </h3>
-      <div
-        style={{
-          backgroundColor: "#1E1E2F",
-          padding: "1.5rem",
-          borderRadius: "12px",
-          width: "100%",
-          maxWidth: "800px",
-          fontFamily: "'Fira Code', monospace",
-        }}
-      >
+      <div className="bg-[#1E1E2F] p-6 rounded-lg w-full max-w-4xl font-firaCode">
         <SyntaxHighlighter language="rust" style={tomorrow}>
           {`module Suinaut::flash{
 
@@ -254,46 +236,32 @@ function FlashLoanChallenge() {
         }
     }
 }
-
-  `}
+`}
         </SyntaxHighlighter>
       </div>
-      <div
-        style={{
-          marginTop: "2rem",
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "1rem",
-        }}
-      >
+      <div className="mt-8 flex flex-col items-center gap-4">
         <input
           type="text"
           placeholder="Solution package id"
-          style={{ padding: "0.75rem", borderRadius: "8px" }}
+          className="px-4 py-3 rounded-lg  border-2 border-gray-500"
           value={solutionPkgId}
           onChange={(e) => setSolutionPkgId(e.target.value)}
         />
         <input
           type="text"
           placeholder="Solution module name"
-          style={{ padding: "0.75rem", borderRadius: "8px" }}
+          className="px-4 py-3 rounded-lg  border-2 border-gray-500"
           value={module}
           onChange={(e) => setModule(e.target.value)}
         />
         <button
           onClick={handleSubmit}
-          style={{
-            backgroundColor: "#FF6347",
-            color: "#FFF",
-            padding: "0.75rem 1.5rem",
-            borderRadius: "8px",
-            fontWeight: "600",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            cursor: "pointer",
-            transition: "transform 0.2s ease, box-shadow 0.2s ease",
-          }}
+          className="bg-red-500 
+                      text-white px-6 py-3 
+                      rounded-lg 
+                      font-semibold shadow-md 
+                      border-2 border-white
+                      transition-transform transform hover:scale-105 hover:shadow-lg"
         >
           Submit Challenge
         </button>
@@ -301,16 +269,9 @@ function FlashLoanChallenge() {
 
       {message && (
         <div
-          style={{
-            marginTop: "2rem",
-            backgroundColor: "#1E1E2F",
-            color: message.includes("is correct") ? "#A3E635" : "#F7768E",
-            padding: "1rem",
-            borderRadius: "8px",
-            textAlign: "center",
-            fontWeight: "500",
-            maxWidth: "800px",
-          }}
+          className={`mt-8 bg-[#1E1E2F] text-center ${
+            message.includes("is correct") ? "text-green-400" : "text-red-500"
+          } p-4 rounded-lg font-medium max-w-4xl`}
         >
           {message}
         </div>

@@ -109,20 +109,14 @@ function Challenge_1() {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#121212",
-        color: "#FFFFFF",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "2rem",
-        fontFamily: "'Inter', sans-serif",
-        position: "relative",
-      }}
-    >
+    <div className="bg-[#121212] 
+                    text-white 
+                    min-h-screen 
+                    flex flex-col 
+                    items-center 
+                    justify-center 
+                    p-8 relative 
+                    font-inter">
       {showConfetti && (
         <Confetti
           width={window.innerWidth}
@@ -132,48 +126,30 @@ function Challenge_1() {
       )}
       <button
         onClick={goHome}
-        style={{
-          position: "absolute",
-          top: "10px",
-          left: "10px",
-          padding: "10px 15px",
-          fontSize: "16px",
-          backgroundColor: "#4CAF50",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-          transition: "transform 0.2s ease, box-shadow 0.2s ease",
-        }}
-        onMouseOver={(e) => {
-          e.currentTarget.style.transform = "scale(1.05)";
-          e.currentTarget.style.boxShadow = "0px 6px 12px rgba(0, 0, 0, 0.15)";
-        }}
-        onMouseOut={(e) => {
-          e.currentTarget.style.transform = "scale(1)";
-          e.currentTarget.style.boxShadow = "0px 4px 8px rgba(0, 0, 0, 0.1)";
-        }}
+        className="absolute 
+                    top-2.5 
+                    left-2.5 
+                    px-4 
+                    py-2 
+                    text-lg 
+                    bg-green-500
+                    text-white 
+                    rounded 
+                    cursor-pointer 
+                    shadow-md 
+                    transition-transform 
+                    transform 
+                    hover:scale-105 
+                    hover:shadow-lg"
       >
         🏠 Home
       </button>
-      <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem", color: "#FFF" }}>
-        🔢 Challenge 1: Counter Management
-      </h1>
+      <h1 className="text-4xl mb-4 font-bold">🔢 Challenge 1: Counter Management</h1>
       <ConnectButton />
-      <h3 style={{ marginTop: "1rem", color: "#A3E635" }}>
+      <h3 className="text-2xl mt-4 font-bold text-green-400">
         Try to count more than 2 times.
       </h3>
-      <div
-        style={{
-          backgroundColor: "#1E1E2F",
-          padding: "1.5rem",
-          borderRadius: "12px",
-          width: "100%",
-          maxWidth: "800px",
-          fontFamily: "'Fira Code', monospace",
-        }}
-      >
+      <div className="bg-[#1E1E2F] p-6 rounded-lg w-full max-w-4xl font-firaCode">
         <SyntaxHighlighter language="rust" style={tomorrow}>
           {`module Suinaut::Counter {
     use sui::object::{Self, UID};
@@ -214,50 +190,41 @@ function Challenge_1() {
 }`}
         </SyntaxHighlighter>
       </div>
-      <div style={{ marginTop: "2rem", display: "flex", gap: "1rem" }}>
+      <div className="mt-8 flex gap-4">
         <button
           onClick={createCounter}
-          style={{
-            backgroundColor: "#6C63FF",
-            color: "#FFF",
-            padding: "0.75rem 1.5rem",
-            borderRadius: "8px",
-            fontWeight: "600",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            cursor: "pointer",
-            transition: "transform 0.2s ease, box-shadow 0.2s ease",
-          }}
+          className="bg-purple-600 
+                      text-white 
+                      px-6 py-3 
+                      rounded-lg 
+                      font-semibold 
+                      shadow-md 
+                      border-2 border-white
+                      transition-transform 
+                      transform hover:scale-105 hover:shadow-lg"
         >
           Create Counter
         </button>
         <button
           onClick={validateObject}
-          style={{
-            backgroundColor: "#FF6347",
-            color: "#FFF",
-            padding: "0.75rem 1.5rem",
-            borderRadius: "8px",
-            fontWeight: "600",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            cursor: "pointer",
-            transition: "transform 0.2s ease, box-shadow 0.2s ease",
-          }}
+          className="bg-red-500 
+                      text-white 
+                      px-6 py-3 
+                      rounded-lg 
+                      font-semibold 
+                      shadow-md 
+                      border-2 border-white
+                      transition-transform 
+                      transform hover:scale-105 hover:shadow-lg"
         >
           Submit Challenge
         </button>
       </div>
       {message && (
         <div
-          style={{
-            marginTop: "2rem",
-            backgroundColor: "#1E1E2F",
-            color: message === "Validation complete!" ? "#A3E635" : "#F7768E",
-            padding: "1rem",
-            borderRadius: "8px",
-            textAlign: "center",
-            fontWeight: "500",
-            maxWidth: "800px",
-          }}
+          className={`mt-8 bg-[#1E1E2F] text-center ${
+            message === "Validation complete!" ? "text-green-400" : "text-red-500"
+          } p-4 rounded-lg font-medium max-w-2xl`}
         >
           {message}
         </div>
