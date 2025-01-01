@@ -222,9 +222,8 @@ function Challenge_1() {
       </div>
       {message && (
         <div
-          className={`mt-8 bg-[#1E1E2F] text-center ${
-            message === "Validation complete!" ? "text-green-400" : "text-red-500"
-          } p-4 rounded-lg font-medium max-w-2xl`}
+          className={`mt-8 bg-[#1E1E2F] text-center ${message === "Validation complete!" ? "text-green-400" : "text-red-500"
+            } p-4 rounded-lg font-medium max-w-2xl`}
         >
           {message}
         </div>
