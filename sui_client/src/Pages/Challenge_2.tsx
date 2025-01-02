@@ -1,108 +1,23 @@
-import { useNavigate } from "react-router-dom";
 import { ConnectButton } from "@mysten/dapp-kit";
 import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
-import Confetti from "react-confetti";
 import { useAtomValue } from "jotai";
 import { packageIdAtom } from "../atom";
+import Header from "../components/Header";
+import ChallengeDescription from "../components/ChallengeDescription";
+import RedButton from "../components/RedButton";
+import InputBox from "../components/InputBox";
+import InfoBox from "../components/InfoBox";
 
 function FlashLoanChallenge() {
-  const navigate = useNavigate();
   const [message, setMessage] = useState<string | null>(null);
   const packageId = useAtomValue(packageIdAtom);
   const [solutionPkgId, setSolutionPkgId] = useState("");
   const [module, setModule] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const goHome = () => {
-    navigate("/");
-  };
-
-  const handleSubmit = async () => {
-    const url = "http://127.0.0.1:9000";
-    const payload = {
-      jsonrpc: "2.0",
-      id: 1,
-      method: "suix_queryEvents",
-      params: [
-        {
-          MoveModule: {
-            package: solutionPkgId,
-            module: module,
-            type: `${packageId}::flash::Flag`,
-          },
-        },
-        null,
-        3,
-        false,
-      ],
-    };
-
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-      if (data?.result?.data?.[0]?.parsedJson?.flag) {
-        setMessage("Your solution is correct!");
-        setShowConfetti(true);
-        setTimeout(() => {
-          window.scrollTo(0, document.body.scrollHeight);
-        }, 100);
-      } else {
-        setMessage("Solution is not correct.");
-      }
-    } catch (error) {
-      setMessage("Solution is not correct.");
-    }
-  };
-
-  return (
-    <div className="bg-[#121212] 
-                    text-white 
-                    min-h-screen 
-                    flex 
-                    flex-col 
-                    items-center 
-                    justify-center 
-                    p-8 font-inter">
-
-      {showConfetti && (
-        <Confetti
-          width={window.innerWidth}
-          height={document.body.offsetHeight}
-          gravity={1}
-        />
-      )}
-      <button
-        onClick={goHome}
-        className="absolute 
-                    top-2.5 
-                    left-2.5 
-                    px-4 py-2 
-                    text-lg 
-                    bg-green-500 
-                    text-white 
-                    rounded 
-                    cursor-pointer"
-      >
-        🏠 Home
-      </button>
-
-      <h1 className="text-4xl mb-4 font-bold">💸 Flash Loan Challenge</h1>
-      <ConnectButton />
-      <h3 className="text-2xl mt-4 font-bold text-green-400">
-        Try to emit the flag while the balance of FlashLender is 0.
-      </h3>
-      <div className="bg-[#1E1E2F] p-6 rounded-lg w-full max-w-4xl font-firaCode">
-        <SyntaxHighlighter language="rust" style={tomorrow}>
-          {`module Suinaut::flash{
+  const code = `module Suinaut::flash{
 
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
@@ -236,45 +151,82 @@ function FlashLoanChallenge() {
         }
     }
 }
-`}
+`
+
+  const handleSubmit = async () => {
+    const url = "http://127.0.0.1:9000";
+    const payload = {
+      jsonrpc: "2.0",
+      id: 1,
+      method: "suix_queryEvents",
+      params: [
+        {
+          MoveModule: {
+            package: solutionPkgId,
+            module: module,
+            type: `${packageId}::flash::Flag`,
+          },
+        },
+        null,
+        3,
+        false,
+      ],
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      if (data?.result?.data?.[0]?.parsedJson?.flag) {
+        setMessage("Your solution is correct!");
+        setShowConfetti(true);
+        setTimeout(() => {
+          window.scrollTo(0, document.body.scrollHeight);
+        }, 100);
+      } else {
+        setMessage("Solution is not correct.");
+      }
+    } catch (error) {
+      setMessage("Solution is not correct.");
+    }
+  };
+
+  return (
+    <div className="bg-[#121212] text-white min-h-screen flex flex-col items-center justify-center p-8 font-inter">
+      <Header title="💸 Flash Loan Challenge" showConfetti={showConfetti} />
+      <ConnectButton />
+      <ChallengeDescription text="Try to emit the flag while the balance of FlashLender is 0." />
+
+      <div className="bg-[#1E1E2F] p-6 rounded-lg w-full max-w-4xl font-firaCode">
+        <SyntaxHighlighter language="rust" style={tomorrow}>
+          {code}
         </SyntaxHighlighter>
       </div>
       <div className="mt-8 flex flex-col items-center gap-4">
-        <input
-          type="text"
+        <InputBox
           placeholder="Solution package id"
-          className="px-4 py-3 rounded-lg  border-2 border-gray-500"
           value={solutionPkgId}
           onChange={(e) => setSolutionPkgId(e.target.value)}
         />
-        <input
-          type="text"
+        <InputBox
           placeholder="Solution module name"
-          className="px-4 py-3 rounded-lg  border-2 border-gray-500"
           value={module}
           onChange={(e) => setModule(e.target.value)}
         />
-        <button
-          onClick={handleSubmit}
-          className="bg-red-500 
-                      text-white px-6 py-3 
-                      rounded-lg 
-                      font-semibold shadow-md 
-                      border-2 border-white
-                      transition-transform transform hover:scale-105 hover:shadow-lg"
-        >
-          Submit Challenge
-        </button>
+        <RedButton onClick={handleSubmit} text="Submit Challenge"/>
       </div>
 
       {message && (
-        <div
-          className={`mt-8 bg-[#1E1E2F] text-center ${
-            message.includes("is correct") ? "text-green-400" : "text-red-500"
-          } p-4 rounded-lg font-medium max-w-4xl`}
-        >
-          {message}
-        </div>
+        <InfoBox
+          text={message}
+          type={message.includes("is correct") ? "success" : "error"}
+        />
       )}
     </div>
   );
