@@ -11,7 +11,7 @@ module Suinaut::Counter {
     }
 
     /// Flag Struct
-    struct Flag has key {
+    struct FlagSuinaut has key {
         id: UID,
         prob: address,
         player: address,
@@ -37,10 +37,16 @@ module Suinaut::Counter {
         event::emit(CountEvent { value: counter.count });
     }
 
-    /// Event emitted for validation success
+    /// Event emitted for verifying flag
+    struct VerifyingFlagEvent has copy, drop {
+        message: vector<u8>, // Example message like "pass"
+    }
+
+    /// Event emitted for verifying flag
     struct ValidationEvent has copy, drop {
         message: vector<u8>, // Example message like "pass"
     }
+
 
     /// Create a new Counter object and transfer ownership to the sender
     entry fun create_object(ctx: &mut TxContext) {
@@ -50,7 +56,6 @@ module Suinaut::Counter {
         };
         transfer::transfer(counter, tx_context::sender(ctx));
     }
-
 
     /// Validate the Counter object
     entry fun validate_object(counter: &Counter) {
@@ -67,7 +72,7 @@ module Suinaut::Counter {
 
     /// Create new flag object
     fun create_flag(ctx: &mut TxContext) {
-        let flag = Flag {
+        let flag = FlagSuinaut {
             id: object::new(ctx),
             prob: @Suinaut,
             player: tx_context::sender(ctx),
@@ -77,12 +82,13 @@ module Suinaut::Counter {
         transfer::transfer(flag, tx_context::sender(ctx));
     }
 
-    entry fun verify_flag(flag: &Flag, ctx: &TxContext) {
+    /// Verify Flag
+    entry fun verify_flag(flag: &FlagSuinaut, ctx: &TxContext) {
       if (flag.prob == @Suinaut 
           && flag.player == tx_context::sender(ctx)) {
-        event::emit(ValidationEvent { message: b"👍 Good Job" });
+        event::emit(VerifyingFlagEvent { message: b"👍 Good Job" });
       } else {
-        event::emit(ValidationEvent { message: b"Error, Invalid Flag" });
+        event::emit(VerifyingFlagEvent { message: b"Error, Invalid Flag" });
       }
     }
 }

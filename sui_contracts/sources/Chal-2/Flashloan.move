@@ -30,10 +30,20 @@ module Suinaut::flash{
         flash_lender_id: ID,
     }
 
-    struct Flag has copy, drop {
-        user: address,
-        flag: bool
+    /// Flag Struct
+    struct FlagSuinaut has key {
+        id: UID,
+        prob: address,
+        player: address,
+        msg: vector<u8>
     }
+
+    /// Event emitted for verifying flag
+    struct VerifyingFlagEvent has copy, drop {
+        message: vector<u8>, // Example message like "pass"
+    }
+
+
 
     // creat a FlashLender
     public fun create_lend(lend_coin: Coin<FLASH>, ctx: &mut TxContext) {
@@ -128,7 +138,30 @@ module Suinaut::flash{
     // check whether you can get the flag
     public entry fun get_flag(self: &mut FlashLender, ctx: &mut TxContext) {
         if (balance::value(&self.to_lend) == 0) {
-            event::emit(Flag { user: tx_context::sender(ctx), flag: true });
+            create_flag(ctx);
         }
     }
+
+    /// Create new flag object
+    fun create_flag(ctx: &mut TxContext) {
+        let flag = FlagSuinaut {
+            id: object::new(ctx),
+            prob: @Suinaut,
+            player: tx_context::sender(ctx),
+            msg: b"Flag-2"
+        };
+
+        transfer::transfer(flag, tx_context::sender(ctx));
+    }
+
+    /// Verify Flag
+    entry fun verify_flag(flag: &FlagSuinaut, ctx: &TxContext) {
+      if (flag.prob == @Suinaut 
+          && flag.player == tx_context::sender(ctx)) {
+        event::emit(VerifyingFlagEvent { message: b"👍 Good Job" });
+      } else {
+        event::emit(VerifyingFlagEvent { message: b"Error, Invalid Flag" });
+      }
+    }
+
 }
