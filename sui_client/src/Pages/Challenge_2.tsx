@@ -4,7 +4,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useAtomValue } from "jotai";
 import { packageIdAtom } from "../atom";
-import Header from "../components/Header";
+import Header from "../components/layout/Header";
 import ChallengeDescription from "../components/ChallengeDescription";
 import RedButton from "../components/RedButton";
 import InputBox from "../components/InputBox";
