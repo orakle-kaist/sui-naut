@@ -1,25 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { ConnectButton } from "@mysten/dapp-kit"; // DAppProvider 추가
-import { useAtom } from "jotai";
-import { packageIdAtom } from "../atom";
+import Header from "../components/layout/Header";
 
 function Home() {
   const navigate = useNavigate();
-  const [packageId, setPackageId] = useAtom(packageIdAtom);
 
   return (
-    <div className="bg-[#1E1E2F] text-white min-h-screen flex flex-col justify-center items-center text-center p-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#62A1F8] to-[#103870]">
+      <Header />
       <h1 className="font-inter text-6xl font-bold mb-4">The Suinaut 🚀</h1>
-      <div className="my-8 flex justify-center items-center flex-row">
-        <ConnectButton /> 
-        <input
-          type="text"
-          placeholder="Enter the published package ID"
-          className="ml-4 p-2 text-black rounded"
-          onChange={(e) => setPackageId(e.target.value)}
-          value={packageId}
-        />
-      </div>
       <p className="font-inter text-xl mb-8 leading-relaxed">
         A Sui-based dApp challenge game inspired by Ethernaut.
         <br />
