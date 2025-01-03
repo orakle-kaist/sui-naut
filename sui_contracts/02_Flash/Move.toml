@@ -1,16 +1,10 @@
 [package]
-name = "Suinaut"
-version = "0.1.0"
-authors = ["Your Name <your.email@example.com>"]
+name = "suinaut-flash"
+version = "0.0.1"
 
 [dependencies]
 MoveStdlib = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-framework/packages/move-stdlib", rev = "framework/devnet" }
 Sui = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/devnet" }
 
 [addresses]
-Suinaut = "0x0" # TODO: Change this to the actual address
-MoveStdlib = "0x2"
-
-# [dev-addresses]
-# Suinaut = "0x1"
-
+Suinaut = "0x0"

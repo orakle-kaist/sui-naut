@@ -3,3 +3,4 @@ node_modules/
 build/
 dist/
 src/gamedata/deploy.local.json
+.DS_Store
