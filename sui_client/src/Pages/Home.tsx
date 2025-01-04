@@ -28,7 +28,7 @@ function Home() {
         <ChallengeGrid />
         </div>
         <div className="absolute -left-12 -bottom-0">
-          <img src={astronautDesk} alt="Floating Astronaut" className="w-[380px] h-[350px]  2xl:w-[450px] 2xl:h-[450px]"/>
+          <img src={astronautDesk} alt="Astronaut at Desk" className="clip-image w-[370px] h-[350px] 2xl:w-[450px] 2xl:h-[450px]" />
         </div>
       </div>
       <Footer />
