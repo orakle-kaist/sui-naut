@@ -2,11 +2,7 @@
 
 [move]
 version = 3
-<<<<<<< HEAD:sui_contracts/Move.lock
-manifest_digest = "7037AFE225C35798BDD6FBD9D5043390FFF21B143E3750A8F79ECFC181BF7FF9"
-=======
 manifest_digest = "C4117F23E5381EC2FFE1F8B143E817ECC7027A703E0D1F7FAF3D1C47A82EEB92"
->>>>>>> 50b75245ad23cd84ae638aa5007671cc400bdeea:sui_contracts/02_Flash/Move.lock
 deps_digest = "3C4103934B1E040BB6B23F1D610B4EF9F2F1166A50A104EADCF77467C004C600"
 dependencies = [
   { id = "MoveStdlib", name = "MoveStdlib" },
@@ -33,13 +29,7 @@ flavor = "sui"
 [env]
 
 [env.local]
-<<<<<<< HEAD:sui_contracts/Move.lock
-chain-id = "9fb8af6f"
-original-published-id = "0xefe3b68340c40b2ce0b652a9f3926a640a302c30c73892770d8f5ed350f20c23"
-latest-published-id = "0xefe3b68340c40b2ce0b652a9f3926a640a302c30c73892770d8f5ed350f20c23"
-=======
-chain-id = "d03f8a24"
-original-published-id = "0x5e87e56f7770a0ac12dab71d8649b918ab7ade7a4200c25be4a8094d0afa0d50"
-latest-published-id = "0x5e87e56f7770a0ac12dab71d8649b918ab7ade7a4200c25be4a8094d0afa0d50"
->>>>>>> 50b75245ad23cd84ae638aa5007671cc400bdeea:sui_contracts/02_Flash/Move.lock
+chain-id = "dd4e9fcf"
+original-published-id = "0xbb1c057d10013515059d13d82849e21063e5ca770e972c946d7e417448e90ad9"
+latest-published-id = "0xbb1c057d10013515059d13d82849e21063e5ca770e972c946d7e417448e90ad9"
 published-version = "1"

@@ -31,7 +31,7 @@ module Suinaut::flash{
     }
 
     /// Flag Struct
-    struct FlagSuinaut has key {
+    struct SuinautFlag has key {
         id: UID,
         prob: address,
         player: address,
@@ -138,13 +138,13 @@ module Suinaut::flash{
     // check whether you can get the flag
     public entry fun get_flag(self: &mut FlashLender, ctx: &mut TxContext) {
         if (balance::value(&self.to_lend) == 0) {
-            create_flag(ctx);
+            dispatch_flag(ctx);
         }
     }
 
     /// Create new flag object
-    fun create_flag(ctx: &mut TxContext) {
-        let flag = FlagSuinaut {
+    fun dispatch_flag(ctx: &mut TxContext) {
+        let flag = SuinautFlag {
             id: object::new(ctx),
             prob: @Suinaut,
             player: tx_context::sender(ctx),
@@ -155,7 +155,7 @@ module Suinaut::flash{
     }
 
     /// Verify Flag
-    entry fun verify_flag(flag: &FlagSuinaut, ctx: &TxContext) {
+    entry fun verify_flag(flag: &SuinautFlag, ctx: &TxContext) {
       if (flag.prob == @Suinaut 
           && flag.player == tx_context::sender(ctx)) {
         event::emit(VerifyingFlagEvent { message: b"👍 Good Job" });
