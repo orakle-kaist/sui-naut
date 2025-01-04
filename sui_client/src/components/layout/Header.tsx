@@ -41,15 +41,20 @@ const Header: React.FC<HeaderProps> = ({ showConfetti }) => {
         </a>
       </div>
       <div className="flex items-center gap-4">
-        <button className="text-white hover:text-white/80">
+        <button 
+        onClick={goHome}
+        className="text-white hover:text-white/80">
           <img src={homeIcon} alt="home_icon" className="w-6 h-6" />
         </button>
+        {/* TODO: 네트워크 선택 기능 추가 */}
         <button className="text-white hover:text-white/80">
           <img src={networkIcon} alt="network_icon" className="w-6 h-6" />
         </button>
+        {/* TODO: 도움말 페이지 연결 */}
         <button className="text-white hover:text-white/80">
           <img src={helpIcon} alt="help_icon" className="w-6 h-6" />
         </button>
+        {/* TODO: 메달 페이지 또는 랭킹 구현 */}
         <button className="text-white hover:text-white/80">
           <img src={medalIcon} alt="medal_icon" className="w-6 h-6" />
         </button>

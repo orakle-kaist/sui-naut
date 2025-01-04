@@ -199,7 +199,7 @@ function FlashLoanChallenge() {
 
   return (
     <div className="bg-[#121212] text-white min-h-screen flex flex-col items-center justify-center p-8 font-inter">
-      <Header title="💸 Flash Loan Challenge" showConfetti={showConfetti} />
+      <Header showConfetti={showConfetti} />
       <ConnectButton />
       <ChallengeDescription text="Try to emit the flag while the balance of FlashLender is 0." />
 

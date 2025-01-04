@@ -146,7 +146,7 @@ function Challenge_1() {
 
   return (
     <div className="bg-[#121212] text-white min-h-screen flex flex-col items-center justify-center p-8 relative font-inter">
-      <Header title="🔢 Challenge 1: Counter Management" showConfetti={showConfetti} />
+      <Header showConfetti={showConfetti} />
       <ConnectButton />
       <ChallengeDescription text="Try to count more than 2 times."/>
       <div className="bg-[#1E1E2F] p-6 rounded-lg w-full max-w-4xl font-firaCode">
