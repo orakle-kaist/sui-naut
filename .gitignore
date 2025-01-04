@@ -3,8 +3,6 @@ node_modules/
 build/
 dist/
 src/gamedata/deploy.local.json
-<<<<<<< HEAD
 .DS_Store
-=======
-.DS_Store
->>>>>>> origin/main
+
+
