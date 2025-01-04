@@ -1,4 +1,3 @@
-//import { useNavigate } from "react-router-dom";
 import Header        from "../components/layout/Header";
 import Footer        from "../components/layout/Footer";
 import ChallengeGrid from "../components/ChallengeGrid";
@@ -8,7 +7,7 @@ import astronautFloat  from "../assets/images/astronautFloat.png"
 import astronautDesk   from "../assets/images/astronautDesk.png"
 
 function Home() {
-  //const navigate = useNavigate();
+
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#62A1F8] to-[#103870]">

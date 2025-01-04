@@ -3,7 +3,6 @@ import {
   useSignAndExecuteTransaction,
   useAccounts,
   useSuiClient,
-  ConnectButton,
 } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -12,7 +11,7 @@ import { useAtomValue } from "jotai";
 import { packageIdAtom } from "../atom";
 import Header from "../components/layout/Header";
 import ChallengeDescription from "../components/ChallengeDescription";
-import PurpleButton from "../components/PurpleButton"
+import PurpleButton from "../components/PurpleButton";
 import RedButton from "../components/RedButton";
 import InfoBox from "../components/InfoBox";
 
@@ -74,7 +73,7 @@ function Challenge_1() {
             event::emit(CountEvent { value: counter.count });
         }
     }
-}`
+}`;
 
   const createCounter = async () => {
     if (!accounts || accounts.length === 0) {
@@ -97,7 +96,7 @@ function Challenge_1() {
       console.log(result);
 
       const newCounterId = result.objectChanges?.find(
-        (change) => change.type === "created",
+        (change) => change.type === "created"
       )?.objectId;
 
       if (newCounterId) {
@@ -127,7 +126,7 @@ function Challenge_1() {
       const tx = new Transaction();
       tx.moveCall({
         target: `${packageId}::Counter::validate_object`,
-        arguments: [tx.object(counterId)]
+        arguments: [tx.object(counterId)],
       });
 
       await signAndExecuteTransaction({
@@ -145,22 +144,29 @@ function Challenge_1() {
   };
 
   return (
-    <div className="bg-[#121212] text-white min-h-screen flex flex-col items-center justify-center p-8 relative font-inter">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#62A1F8] to-[#103870]">
       <Header showConfetti={showConfetti} />
-      <ConnectButton />
-      <ChallengeDescription text="Try to count more than 2 times."/>
-      <div className="bg-[#1E1E2F] p-6 rounded-lg w-full max-w-4xl font-firaCode">
-        <SyntaxHighlighter language="rust" style={tomorrow}>
-          {code}
-        </SyntaxHighlighter>
+      <div className="flex-grow flex flex-col items-center justify-center px-4">
+        <ChallengeDescription
+          title="Challenge 1: Counter"
+          text="Try to count more than 2 times."
+        />
+        <div className="w-full max-w-4xl">
+          <SyntaxHighlighter language="rust" style={tomorrow}>
+            {code}
+          </SyntaxHighlighter>
+        </div>
+        <div className="mt-8 flex gap-4">
+          <PurpleButton onClick={createCounter} text="Create Counter" />
+          <RedButton onClick={validateObject} text="Submit Challenge" />
+        </div>
+        {message && (
+          <InfoBox
+            text={message}
+            type={message === "Validation complete!" ? "success" : "error"}
+          />
+        )}
       </div>
-      <div className="mt-8 flex gap-4">
-        <PurpleButton onClick={createCounter} text="Create Counter" />
-        <RedButton onClick={validateObject} text="Submit Challenge"/>
-      </div>
-      {message && (
-        <InfoBox text={message} type={message === "Validation complete!" ? "success" : "error"} />
-      )}
     </div>
   );
 }
