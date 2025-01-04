@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: { 
       fontFamily: {
-        rajdhani: ['Rajdhani', 'sans-serif'], // Rajdhani 추가
+      rajdhani: ['Rajdhani', 'sans-serif'], // Rajdhani 추가
       },
     },
   },

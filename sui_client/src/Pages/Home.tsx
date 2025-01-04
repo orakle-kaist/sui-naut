@@ -27,7 +27,7 @@ function Home() {
         <div className="flex items-center justify-center mt-10">
         <ChallengeGrid />
         </div>
-        <div className="absolute -left-12 -bottom-10">
+        <div className="absolute -left-12 -bottom-0">
           <img src={astronautDesk} alt="Floating Astronaut" className="w-[380px] h-[350px]  2xl:w-[450px] 2xl:h-[450px]"/>
         </div>
       </div>

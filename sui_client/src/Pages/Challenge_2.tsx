@@ -1,4 +1,3 @@
-import { ConnectButton } from "@mysten/dapp-kit";
 import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -198,16 +197,18 @@ function FlashLoanChallenge() {
   };
 
   return (
-    <div className="bg-[#121212] text-white min-h-screen flex flex-col items-center justify-center p-8 font-inter">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#62A1F8] to-[#103870]">
       <Header showConfetti={showConfetti} />
-      <ConnectButton />
-      <ChallengeDescription text="Try to emit the flag while the balance of FlashLender is 0." />
-
-      <div className="bg-[#1E1E2F] p-6 rounded-lg w-full max-w-4xl font-firaCode">
-        <SyntaxHighlighter language="rust" style={tomorrow}>
-          {code}
-        </SyntaxHighlighter>
-      </div>
+      <div className="flex-grow flex flex-col items-center justify-center px-4">
+        <ChallengeDescription
+          title="Challenge 2: Flash"
+          text="Try to emit the flag while the balance of FlashLender is 0."
+        />
+        <div className="w-full max-w-4xl">
+          <SyntaxHighlighter language="rust" style={tomorrow}>
+            {code}
+          </SyntaxHighlighter>
+        </div>
       <div className="mt-8 flex flex-col items-center gap-4">
         <InputBox
           placeholder="Solution package id"
@@ -221,13 +222,13 @@ function FlashLoanChallenge() {
         />
         <RedButton onClick={handleSubmit} text="Submit Challenge"/>
       </div>
-
       {message && (
         <InfoBox
           text={message}
           type={message.includes("is correct") ? "success" : "error"}
-        />
-      )}
+          />
+        )}
+      </div>
     </div>
   );
 }
