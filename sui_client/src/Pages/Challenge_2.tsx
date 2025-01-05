@@ -4,6 +4,7 @@ import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useAtomValue } from "jotai";
 import { packageIdAtom } from "../atom";
 import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import ChallengeDescription from "../components/ChallengeDescription";
 import RedButton from "../components/RedButton";
 import InputBox from "../components/InputBox";
@@ -209,7 +210,7 @@ function FlashLoanChallenge() {
             {code}
           </SyntaxHighlighter>
         </div>
-      <div className="mt-8 flex flex-col items-center gap-4">
+      <div className="mt-8 flex flex-col items-center gap-4 mb-14">
         <InputBox
           placeholder="Solution package id"
           value={solutionPkgId}
@@ -229,6 +230,7 @@ function FlashLoanChallenge() {
           />
         )}
       </div>
+      <Footer />
     </div>
   );
 }

@@ -3,7 +3,6 @@ import {
   useSignAndExecuteTransaction,
   useAccounts,
   useSuiClient,
-
 } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -158,7 +157,7 @@ function Challenge_1() {
             {code}
           </SyntaxHighlighter>
         </div>
-        <div className="mt-8 flex gap-4">
+        <div className="mt-8 flex gap-4 mb-14">
           <PurpleButton onClick={createCounter} text="Create Counter" />
           <RedButton onClick={validateObject} text="Submit Challenge" />
         </div>
@@ -169,9 +168,7 @@ function Challenge_1() {
           />
         )}
       </div>
-      <div className="">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 }
