@@ -4,7 +4,6 @@ import Confetti from "react-confetti";
 import { ConnectButton, useCurrentWallet } from "@mysten/dapp-kit"; 
 import { useAtom } from "jotai";
 import { packageIdAtom } from "../../atom";
-//import images
 import orakleLogo   from "../../assets/images/orakle_logo.png";
 import homeIcon     from "../../assets/images/home.png";
 import networkIcon  from "../../assets/images/network.png";
