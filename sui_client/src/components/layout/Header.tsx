@@ -23,6 +23,10 @@ const Header: React.FC<HeaderProps> = ({ showConfetti }) => {
     navigate("/");
   };
 
+  const goKasist = () => {
+    window.open("https://www.orakle-kaist.xyz/en", "_blank", "noopener,noreferrer");
+  };
+
   return (
     <header className="text-white w-full p-6 flex justify-between items-center relative" style={{ minHeight: "10vh" }}>
       {showConfetti && ( 
@@ -31,13 +35,13 @@ const Header: React.FC<HeaderProps> = ({ showConfetti }) => {
         height={window.innerHeight} 
         gravity={1} /> )}
       <div className="flex items-center gap-2">
-        <img src={orakleLogo} alt="orakle_logo" className="w-11 h-11" />
-        <a
-        onClick={goHome}
-        className="text-white font-bold text-3xl"
+        <img src={orakleLogo} alt="orakle_logo" className="w-11 h-11 cursor-pointer" onClick={goHome} />
+        <span
+          onClick={goKasist}
+          className="text-white font-bold text-3xl cursor-pointer"
         >
-        ORAKLE
-        </a>
+          ORAKLE
+        </span>
       </div>
       <div className="flex items-center gap-4">
         <button 

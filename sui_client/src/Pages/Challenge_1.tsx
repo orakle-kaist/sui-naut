@@ -11,6 +11,7 @@ import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useAtomValue } from "jotai";
 import { packageIdAtom } from "../atom";
 import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import ChallengeDescription from "../components/ChallengeDescription";
 import PurpleButton from "../components/PurpleButton";
 import RedButton from "../components/RedButton";
@@ -167,6 +168,9 @@ function Challenge_1() {
             type={message === "Validation complete!" ? "success" : "error"}
           />
         )}
+      </div>
+      <div className="">
+        <Footer />
       </div>
     </div>
   );
