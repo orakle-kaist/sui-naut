@@ -221,7 +221,7 @@ function FlashLoanChallenge() {
           value={module}
           onChange={(e) => setModule(e.target.value)}
         />
-        <RedButton onClick={handleSubmit} text="Submit Challenge"/>
+        <RedButton onClick={handleSubmit} text="Submit Challenge" />
       </div>
       {message && (
         <InfoBox

@@ -145,6 +145,7 @@ function Challenge_1() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#62A1F8] to-[#103870]">
       <Header showConfetti={showConfetti} />
       <div className="flex-grow flex flex-col items-center justify-center px-4">
@@ -169,6 +170,24 @@ function Challenge_1() {
         )}
       </div>
       <Footer />
+=======
+    <div className="bg-[#121212] text-white min-h-screen flex flex-col items-center justify-center p-8 relative font-inter">
+      <Header title="🔢 Challenge 1: Counter Management" showConfetti={showConfetti} />
+      <ConnectButton />
+      <ChallengeDescription text="Try to count more than 2 times." />
+      <div className="bg-[#1E1E2F] p-6 rounded-lg w-full max-w-4xl font-firaCode">
+        <SyntaxHighlighter language="rust" style={tomorrow}>
+          {code}
+        </SyntaxHighlighter>
+      </div>
+      <div className="mt-8 flex gap-4">
+        <PurpleButton onClick={createCounter} text="Create Counter" />
+        <RedButton onClick={validateObject} text="Submit Challenge" />
+      </div>
+      {message && (
+        <InfoBox text={message} type={message === "Validation complete!" ? "success" : "error"} />
+      )}
+>>>>>>> origin/main
     </div>
   );
 }
