@@ -1,49 +1,37 @@
-import { useNavigate } from "react-router-dom";
-import { ConnectButton } from "@mysten/dapp-kit"; // DAppProvider 추가
-import { useAtom } from "jotai";
-import { packageIdAtom } from "../atom";
+import Header        from "../components/layout/Header";
+import Footer        from "../components/layout/Footer";
+import ChallengeGrid from "../components/ChallengeGrid";
+
+import arrowIcon       from "../assets/images/arrow.png"
+import astronautFloat  from "../assets/images/astronautFloat.png"
+import astronautDesk   from "../assets/images/astronautDesk.png"
 
 function Home() {
-  const navigate = useNavigate();
-  const [packageId, setPackageId] = useAtom(packageIdAtom);
+
 
   return (
-    <div className="bg-[#1E1E2F] text-white min-h-screen flex flex-col justify-center items-center text-center p-8">
-      <h1 className="font-inter text-6xl font-bold mb-4">The Suinaut 🚀</h1>
-      <div className="my-8 flex justify-center items-center flex-row">
-        <ConnectButton /> 
-        <input
-          type="text"
-          placeholder="Enter the published package ID"
-          className="ml-4 p-2 text-black rounded"
-          onChange={(e) => setPackageId(e.target.value)}
-          value={packageId}
-        />
-      </div>
-      <p className="font-inter text-xl mb-8 leading-relaxed">
-        A Sui-based dApp challenge game inspired by Ethernaut.
-        <br />
-        Test your skills in Sui Move with fun and engaging challenges.
-      </p>
-      <div className="flex gap-6">
-        <button
-          className="bg-indigo-500 text-white px-4 py-2 rounded-md font-semibold transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
-          onClick={() => navigate("/challenge-1")}
-        >
-          🔢 Challenge 1: Counter
-        </button>
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#62A1F8] to-[#103870]">
+      <Header showConfetti={false} />
 
-        <button
-          className="bg-indigo-500 text-white px-4 py-2 rounded-md font-semibold transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
-          onClick={() => navigate("/challenge-2")}
-        >
-          💸 Challenge 2: FlashLoan
-        </button>
-
-        <div className="bg-gray-500 text-white px-4 py-2 rounded-md font-semibold">
-          Coming Soon...
+      <div className="flex-grow flex flex-col items-center justify-start pt-10">
+        <h1 className="font-rajdhani text-white text-center text-9xl font-bold mb-12">The Suinaut</h1>
+        <p className="font-rajdhani  text-white text-center text-[25.5px] font-bold mb-10 leading-relaxed">
+          A Sui-based dApp challenge game inspired by Ethernaut.
+          <br />
+          Test your skills in Sui Move with fun and engaging challenges.
+        </p>
+        <div className="absolute right-0 top-75 2xl:right-0 2xl:top-50">
+          <img src={astronautFloat} alt="Floating Astronaut" className="w-[380px] h-[350px]  2xl:w-[450px] 2xl:h-[450px]"/>
+        </div>
+        <img src={arrowIcon} alt="arrow" className="w-8 h-5" />
+        <div className="flex items-center justify-center mt-10">
+        <ChallengeGrid />
+        </div>
+        <div className="absolute -left-12 -bottom-0">
+          <img src={astronautDesk} alt="Astronaut at Desk" className="clip-image w-[370px] h-[350px] 2xl:w-[450px] 2xl:h-[450px]" />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -4,7 +4,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: { 
+      fontFamily: {
+      rajdhani: ['Rajdhani', 'sans-serif'], // Rajdhani 추가
+      },
+    },
   },
   plugins: [],
 }
