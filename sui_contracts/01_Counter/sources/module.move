@@ -1,8 +1,7 @@
 module Suinaut::Counter {
     use sui::object::{Self, UID};
     use sui::tx_context::{Self, TxContext};
-    use sui::transfer;
-    use sui::event;
+    use sui::{event, transfer};
 
     /// Counter Struct
     struct Counter has key {
@@ -37,17 +36,6 @@ module Suinaut::Counter {
         event::emit(CountEvent { value: counter.count });
     }
 
-    /// Event emitted for verifying flag
-    struct VerifyingFlagEvent has copy, drop {
-        message: vector<u8>, // Example message like "pass"
-    }
-
-    /// Event emitted for verifying flag
-    struct ValidationEvent has copy, drop {
-        message: vector<u8>, // Example message like "pass"
-    }
-
-
     /// Create a new Counter object and transfer ownership to the sender
     entry fun create_object(ctx: &mut TxContext) {
         let counter = Counter {
@@ -55,19 +43,6 @@ module Suinaut::Counter {
             count: 0,
         };
         transfer::transfer(counter, tx_context::sender(ctx));
-    }
-
-    /// Validate the Counter object
-    entry fun validate_object(counter: &Counter) {
-        if (counter.count > 2) {
-            event::emit(ValidationEvent { message: b"pass" });
-
-        } else {
-            event::emit(ValidationEvent { message: b"fail, count must be greater than 5" });
-            /*
-            abort 1 // Validation failed
-            */
-        }
     }
 
     /// Create new flag object
@@ -83,12 +58,12 @@ module Suinaut::Counter {
     }
 
     /// Verify Flag
-    entry fun verify_flag(flag: &SuinautFlag, ctx: &TxContext) {
+    entry fun verify_flag(flag: &SuinautFlag, ctx: &TxContext): bool {
       if (flag.prob == @Suinaut 
           && flag.player == tx_context::sender(ctx)) {
-        event::emit(VerifyingFlagEvent { message: b"👍 Good Job" });
+          true
       } else {
-        event::emit(VerifyingFlagEvent { message: b"Error, Invalid Flag" });
+          false
       }
     }
 }
