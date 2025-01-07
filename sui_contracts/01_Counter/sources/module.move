@@ -4,7 +4,7 @@ module Suinaut::Counter {
     use sui::{event, transfer};
 
     /// Counter Struct
-    struct Counter has key {
+    struct Counter has key, store {
         id: UID,
         count: u64,
     }
@@ -42,7 +42,10 @@ module Suinaut::Counter {
             id: object::new(ctx),
             count: 0,
         };
-        transfer::transfer(counter, tx_context::sender(ctx));
+
+        let owner = tx_context::sender(ctx);
+
+        transfer::public_transfer(counter, owner);
     }
 
     /// Create new flag object
@@ -55,16 +58,6 @@ module Suinaut::Counter {
         };
 
         transfer::transfer(flag, tx_context::sender(ctx));
-    }
-
-    /// Verify Flag
-    entry fun verify_flag(flag: &SuinautFlag, ctx: &TxContext): bool {
-      if (flag.prob == @Suinaut 
-          && flag.player == tx_context::sender(ctx)) {
-          true
-      } else {
-          false
-      }
     }
 }
 

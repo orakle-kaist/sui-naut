@@ -145,15 +145,4 @@ module Suinaut::flash{
 
         transfer::transfer(flag, tx_context::sender(ctx));
     }
-
-    /// Verify Flag
-    entry fun verify_flag(flag: &SuinautFlag, ctx: &TxContext): bool {
-      if (flag.prob == @Suinaut 
-          && flag.player == tx_context::sender(ctx)) {
-          true
-      } else {
-          false
-      }
-    }
-
 }
