@@ -6,7 +6,6 @@ module Suinaut::flash{
     use sui::balance::{Self, Balance};
     use sui::coin::{Self, Coin};
     use sui::vec_map::{Self, VecMap};
-    use sui::event;
     use std::option;
 
 
@@ -37,13 +36,6 @@ module Suinaut::flash{
         player: address,
         msg: vector<u8>
     }
-
-    /// Event emitted for verifying flag
-    struct VerifyingFlagEvent has copy, drop {
-        message: vector<u8>, // Example message like "pass"
-    }
-
-
 
     // creat a FlashLender
     public fun create_lend(lend_coin: Coin<FLASH>, ctx: &mut TxContext) {
@@ -153,15 +145,4 @@ module Suinaut::flash{
 
         transfer::transfer(flag, tx_context::sender(ctx));
     }
-
-    /// Verify Flag
-    entry fun verify_flag(flag: &SuinautFlag, ctx: &TxContext) {
-      if (flag.prob == @Suinaut 
-          && flag.player == tx_context::sender(ctx)) {
-        event::emit(VerifyingFlagEvent { message: b"👍 Good Job" });
-      } else {
-        event::emit(VerifyingFlagEvent { message: b"Error, Invalid Flag" });
-      }
-    }
-
 }
