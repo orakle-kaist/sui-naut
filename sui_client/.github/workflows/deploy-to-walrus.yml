@@ -1,0 +1,21 @@
+name: Deploy site to Walrus
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy site to Walrus
+        uses: zktx-io/walrus-ga@latest
+        with:
+          site-path: './build'
+          network: 'testnet'
+        env:
+          SUI_ADDRESS: ${{ secrets.SUI_ADDRESS }}
+          SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
