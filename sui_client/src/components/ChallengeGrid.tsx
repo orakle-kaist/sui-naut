@@ -1,13 +1,16 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 import { challengeConfig } from "../config/challengeConfig";
 import { useValidateFlag } from "../hooks/useValidateFlag";
 
 const ChallengeGrid: React.FC = () => {
   const { userHasFlag, updateUserHasFlag } = useValidateFlag();
+  const currentAccount = useCurrentAccount();
+
   useEffect(() => {
     updateUserHasFlag();
-  }, []);
+  }, [currentAccount?.address]);
 
   return (
     <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCurrentAccount, useSuiClientQuery } from "@mysten/dapp-kit";
 import { challengeConfig } from "../config/challengeConfig";
 
