@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCurrentAccount, useSuiClientQuery } from "@mysten/dapp-kit";
 import { challengeConfig } from "../config/challengeConfig";
 
@@ -24,17 +24,17 @@ export function useValidateFlag() {
       },
     },
     {
-      gcTime: 10000,
+      gcTime: 1,
     },
   );
 
-  const updateUserHasFlag = async () => {
-    await refetch();
+  useEffect(() => {
+    if (!data?.data) return;
 
     const newUserHasFlag: UserHasFlag = {};
     for (const packageId of challengeConfig.map(({ packageId }) => packageId)) {
-      newUserHasFlag[packageId] = false;
-      data?.data?.forEach((object) => {
+      if (!packageId) continue;
+      data.data.forEach((object) => {
         const type = object.data?.type;
         if (
           type &&
@@ -46,7 +46,7 @@ export function useValidateFlag() {
       });
     }
     setUserHasFlag(newUserHasFlag);
-  };
+  }, [data?.data]);
 
-  return { userHasFlag, updateUserHasFlag };
+  return { userHasFlag, updateUserHasFlag: refetch };
 }

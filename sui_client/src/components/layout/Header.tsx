@@ -37,6 +37,7 @@ const Header: React.FC<HeaderProps> = ({ showConfetti }) => {
         <Confetti
           width={window.innerWidth}
           height={document.documentElement.scrollHeight}
+          gravity={0.3}
         />
       )}
       <div className="flex items-center gap-2">

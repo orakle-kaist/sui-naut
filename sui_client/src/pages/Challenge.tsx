@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Header from "../components/layout/Header";
@@ -26,12 +26,14 @@ function Challenge({ packageId, title, description, code }: ChallengeProps) {
     }
   };
 
-  useEffect(() => {
+  const onClickSubmit = async () => {
+    await updateUserHasFlag();
+
     if (userHasFlag?.[packageId]) {
       setShowConfetti(true);
       scrollToSth();
     }
-  }, [userHasFlag?.[packageId]]);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#62A1F8] to-[#103870]">
@@ -47,7 +49,7 @@ function Challenge({ packageId, title, description, code }: ChallengeProps) {
           {title === "Counter" && (
             <PurpleButton onClick={createCounter} text="Create Counter" />
           )}
-          <RedButton onClick={updateUserHasFlag} text="Submit Challenge" />
+          <RedButton onClick={onClickSubmit} text="Submit Challenge" />
         </div>
         {message && (
           <InfoBox
