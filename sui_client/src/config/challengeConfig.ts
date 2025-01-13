@@ -5,50 +5,81 @@ export const challengeConfig: ChallengeProps[] = [
     packageId:
       "0x9cad8fc85b0d5344eb819df975bfe5eaa21b5dabb32c6fcb10fc2b8eefc28cd0",
     title: "Counter",
-    description: "Try to count more than 2 times.",
+    description: `Try to count more than 2 times.
+
+Hint: Use Sui Explorer (testnet). Package ID is in the url.
+`,
     code: `module Suinaut::Counter {
     use sui::object::{Self, UID};
     use sui::tx_context::{Self, TxContext};
-    use sui::transfer;
-    use sui::event;
+    use sui::{event, transfer};
 
-    struct Counter has key {
+    /// Counter Struct
+    struct Counter has key, store {
         id: UID,
         count: u64,
     }
 
+    /// Flag Struct
+    struct SuinautFlag has key {
+        id: UID,
+        prob: address,
+        player: address,
+        msg: vector<u8>
+    }
+
+    /// Event to emit the counter value
     struct CountEvent has copy, drop {
         value: u64,
     }
 
-    entry fun increment(counter: &mut Counter) {
+    /// Increment the counter
+    entry fun increment(counter: &mut Counter, ctx: &mut TxContext) {
         counter.count = counter.count + 1;
+
+        if (counter.count == 3) {
+            dispatch_flag(ctx);
+        }
     }
 
+    /// Get the current counter value (emit an event)
     entry fun get_count(counter: &Counter, _ctx: &TxContext) {
         event::emit(CountEvent { value: counter.count });
     }
 
+    /// Create a new Counter object and transfer ownership to the sender
     entry fun create_object(ctx: &mut TxContext) {
         let counter = Counter {
             id: object::new(ctx),
             count: 0,
         };
-        transfer::transfer(counter, tx_context::sender(ctx));
+
+        let owner = tx_context::sender(ctx);
+
+        transfer::public_transfer(counter, owner);
     }
 
-    entry fun validate_object(counter: &Counter, _ctx: &TxContext) {
-        if (counter.count > 2) {
-            event::emit(CountEvent { value: counter.count });
-        }
+    /// Create new flag object
+    fun dispatch_flag(ctx: &mut TxContext) {
+        let flag = SuinautFlag {
+            id: object::new(ctx),
+            prob: @Suinaut,
+            player: tx_context::sender(ctx),
+            msg: b"Flag-1"
+        };
+
+        transfer::transfer(flag, tx_context::sender(ctx));
     }
-}`,
+}
+`,
   },
   {
     packageId:
       "0x07064071ac373096a25faf8ea7f04eb6898286fb3eacf6a4419cb56ff877ea8f",
     title: "Flash",
-    description: "Try to emit the flag while the balance of FlashLender is 0.",
+    description: `Try to get flag while the balance of FlashLender is 0.
+
+Hint: You may deploy your own contract. You can use Bitslab IDE or Sui CLI.`,
     code: `module Suinaut::flash{
 
     use sui::transfer;
@@ -57,7 +88,6 @@ export const challengeConfig: ChallengeProps[] = [
     use sui::balance::{Self, Balance};
     use sui::coin::{Self, Coin};
     use sui::vec_map::{Self, VecMap};
-    use sui::event;
     use std::option;
 
 
@@ -81,9 +111,12 @@ export const challengeConfig: ChallengeProps[] = [
         flash_lender_id: ID,
     }
 
-    struct Flag has copy, drop {
-        user: address,
-        flag: bool
+    /// Flag Struct
+    struct SuinautFlag has key {
+        id: UID,
+        prob: address,
+        player: address,
+        msg: vector<u8>
     }
 
     // creat a FlashLender
@@ -141,7 +174,7 @@ export const challengeConfig: ChallengeProps[] = [
         transfer::public_transfer(cap, owner);
     }
 
-    // get the balance of FlashLender
+    // get  the balance of FlashLender
     public fun balance(self: &mut FlashLender, ctx: &mut TxContext) :u64 {
         *vec_map::get(&self.lender, &tx_context::sender(ctx))
     }
@@ -154,7 +187,7 @@ export const challengeConfig: ChallengeProps[] = [
         if (vec_map::contains(&self.lender, &sender)) {
             let balance = vec_map::get_mut(&mut self.lender, &sender);
             *balance = *balance + coin::value(&coin);
-        } 
+        }
         else {
             vec_map::insert(&mut self.lender, sender, coin::value(&coin));
         };
@@ -179,8 +212,20 @@ export const challengeConfig: ChallengeProps[] = [
     // check whether you can get the flag
     public entry fun get_flag(self: &mut FlashLender, ctx: &mut TxContext) {
         if (balance::value(&self.to_lend) == 0) {
-            event::emit(Flag { user: tx_context::sender(ctx), flag: true });
+            dispatch_flag(ctx);
         }
+    }
+
+    /// Create new flag object
+    fun dispatch_flag(ctx: &mut TxContext) {
+        let flag = SuinautFlag {
+            id: object::new(ctx),
+            prob: @Suinaut,
+            player: tx_context::sender(ctx),
+            msg: b"Flag-2"
+        };
+
+        transfer::transfer(flag, tx_context::sender(ctx));
     }
 }
 `,

@@ -60,4 +60,3 @@ module Suinaut::Counter {
         transfer::transfer(flag, tx_context::sender(ctx));
     }
 }
-
