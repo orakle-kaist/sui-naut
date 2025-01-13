@@ -2,7 +2,7 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/6476d282-a45a-481c-820e-d962ccb23274/deploy-status)](https://app.netlify.com/sites/suinaut/deploys)
 
-## How to start
+## Build and Run Locally
 
 ### 1. Run localnet network
 
