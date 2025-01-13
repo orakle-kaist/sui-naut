@@ -1,23 +1,55 @@
-import { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { useAtomValue } from "jotai";
-import { packageIdAtom } from "../atom";
-import Header from "../components/layout/Header";
-import Footer from "../components/layout/Footer";
-import ChallengeDescription from "../components/ChallengeDescription";
-import RedButton from "../components/RedButton";
-import InputBox from "../components/InputBox";
-import InfoBox from "../components/InfoBox";
+import { ChallengeProps } from "../types";
 
-function FlashLoanChallenge() {
-  const [message, setMessage] = useState<string | null>(null);
-  const packageId = useAtomValue(packageIdAtom);
-  const [solutionPkgId, setSolutionPkgId] = useState("");
-  const [module, setModule] = useState("");
-  const [showConfetti, setShowConfetti] = useState(false);
+export const challengeConfig: ChallengeProps[] = [
+  {
+    packageId:
+      "0x9cad8fc85b0d5344eb819df975bfe5eaa21b5dabb32c6fcb10fc2b8eefc28cd0",
+    title: "Counter",
+    description: "Try to count more than 2 times.",
+    code: `module Suinaut::Counter {
+    use sui::object::{Self, UID};
+    use sui::tx_context::{Self, TxContext};
+    use sui::transfer;
+    use sui::event;
 
-  const code = `module Suinaut::flash{
+    struct Counter has key {
+        id: UID,
+        count: u64,
+    }
+
+    struct CountEvent has copy, drop {
+        value: u64,
+    }
+
+    entry fun increment(counter: &mut Counter) {
+        counter.count = counter.count + 1;
+    }
+
+    entry fun get_count(counter: &Counter, _ctx: &TxContext) {
+        event::emit(CountEvent { value: counter.count });
+    }
+
+    entry fun create_object(ctx: &mut TxContext) {
+        let counter = Counter {
+            id: object::new(ctx),
+            count: 0,
+        };
+        transfer::transfer(counter, tx_context::sender(ctx));
+    }
+
+    entry fun validate_object(counter: &Counter, _ctx: &TxContext) {
+        if (counter.count > 2) {
+            event::emit(CountEvent { value: counter.count });
+        }
+    }
+}`,
+  },
+  {
+    packageId:
+      "0x07064071ac373096a25faf8ea7f04eb6898286fb3eacf6a4419cb56ff877ea8f",
+    title: "Flash",
+    description: "Try to emit the flag while the balance of FlashLender is 0.",
+    code: `module Suinaut::flash{
 
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
@@ -151,88 +183,10 @@ function FlashLoanChallenge() {
         }
     }
 }
-`
-
-  const handleSubmit = async () => {
-    const url = "http://127.0.0.1:9000";
-    const payload = {
-      jsonrpc: "2.0",
-      id: 1,
-      method: "suix_queryEvents",
-      params: [
-        {
-          MoveModule: {
-            package: solutionPkgId,
-            module: module,
-            type: `${packageId}::flash::Flag`,
-          },
-        },
-        null,
-        3,
-        false,
-      ],
-    };
-
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-      if (data?.result?.data?.[0]?.parsedJson?.flag) {
-        setMessage("Your solution is correct!");
-        setShowConfetti(true);
-        setTimeout(() => {
-          window.scrollTo(0, document.body.scrollHeight);
-        }, 100);
-      } else {
-        setMessage("Solution is not correct.");
-      }
-    } catch (error) {
-      setMessage("Solution is not correct.");
-    }
-  };
-
-  return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#62A1F8] to-[#103870]">
-      <Header showConfetti={showConfetti} />
-      <div className="flex-grow flex flex-col items-center justify-center px-4">
-        <ChallengeDescription
-          title="Challenge 2: Flash"
-          text="Try to emit the flag while the balance of FlashLender is 0."
-        />
-        <div className="w-full max-w-4xl">
-          <SyntaxHighlighter language="rust" style={tomorrow}>
-            {code}
-          </SyntaxHighlighter>
-        </div>
-      <div className="mt-8 flex flex-col items-center gap-4 mb-14">
-        <InputBox
-          placeholder="Solution package id"
-          value={solutionPkgId}
-          onChange={(e) => setSolutionPkgId(e.target.value)}
-        />
-        <InputBox
-          placeholder="Solution module name"
-          value={module}
-          onChange={(e) => setModule(e.target.value)}
-        />
-        <RedButton onClick={handleSubmit} text="Submit Challenge" />
-      </div>
-      {message && (
-        <InfoBox
-          text={message}
-          type={message.includes("is correct") ? "success" : "error"}
-          />
-        )}
-      </div>
-      <Footer />
-    </div>
-  );
-}
-
-export default FlashLoanChallenge;
+`,
+  },
+  { title: "Simple Game", packageId: "", description: "", code: "" },
+  { title: "Coming Soon", packageId: "", description: "", code: "" },
+  { title: "Coming Soon", packageId: "", description: "", code: "" },
+  { title: "Coming Soon", packageId: "", description: "", code: "" },
+];
