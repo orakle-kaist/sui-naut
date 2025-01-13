@@ -8,13 +8,15 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        {challengeConfig.map((props) => (
-          <Route
-            path={`/challenge/${props.packageId}`}
-            element={<Challenge {...props} />}
-            key={props.packageId}
-          />
-        ))}
+        {challengeConfig
+          .filter(({ packageId }) => packageId)
+          .map((props) => (
+            <Route
+              path={`/challenge/${props.packageId}`}
+              element={<Challenge {...props} />}
+              key={props.packageId}
+            />
+          ))}
       </Routes>
     </Router>
   );
