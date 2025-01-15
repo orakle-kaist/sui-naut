@@ -6,21 +6,9 @@ interface InfoBoxProps {
 }
 
 const InfoBox: React.FC<InfoBoxProps> = ({ text, type }) => {
-  const bgColor = type === "success" ? "#1E1E2F" : "#1E1E2F";
-  const textColor = type === "success" ? "#22C55E" : "#EF4444";
-
   return (
     <div
-      style={{
-        marginTop: "2rem",
-        backgroundColor: bgColor,
-        color: textColor,
-        padding: "1rem",
-        borderRadius: "8px",
-        textAlign: "center",
-        fontWeight: "500",
-        maxWidth: "800px",
-      }}
+      className={`mb-8 p-4 rounded-lg text-center font-medium max-w-2xl ${type === "success" ? "bg-[#1E1E2F] text-[#22C55E]" : "bg-[#1E1E2F] text-[#EF4444]"}`}
     >
       {text}
     </div>

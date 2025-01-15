@@ -1,23 +1,86 @@
-import { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { useAtomValue } from "jotai";
-import { packageIdAtom } from "../atom";
-import Header from "../components/layout/Header";
-import Footer from "../components/layout/Footer";
-import ChallengeDescription from "../components/ChallengeDescription";
-import RedButton from "../components/RedButton";
-import InputBox from "../components/InputBox";
-import InfoBox from "../components/InfoBox";
+import { ChallengeProps } from "../types";
 
-function FlashLoanChallenge() {
-  const [message, setMessage] = useState<string | null>(null);
-  const packageId = useAtomValue(packageIdAtom);
-  const [solutionPkgId, setSolutionPkgId] = useState("");
-  const [module, setModule] = useState("");
-  const [showConfetti, setShowConfetti] = useState(false);
+export const challengeConfig: ChallengeProps[] = [
+  {
+    packageId:
+      "0x9cad8fc85b0d5344eb819df975bfe5eaa21b5dabb32c6fcb10fc2b8eefc28cd0",
+    title: "Counter",
+    description: `Try to count more than 2 times.
 
-  const code = `module Suinaut::flash{
+Hint: Use Sui Explorer (testnet). Package ID is in the url.
+`,
+    code: `module Suinaut::Counter {
+    use sui::object::{Self, UID};
+    use sui::tx_context::{Self, TxContext};
+    use sui::{event, transfer};
+
+    /// Counter Struct
+    struct Counter has key, store {
+        id: UID,
+        count: u64,
+    }
+
+    /// Flag Struct
+    struct SuinautFlag has key {
+        id: UID,
+        prob: address,
+        player: address,
+        msg: vector<u8>
+    }
+
+    /// Event to emit the counter value
+    struct CountEvent has copy, drop {
+        value: u64,
+    }
+
+    /// Increment the counter
+    entry fun increment(counter: &mut Counter, ctx: &mut TxContext) {
+        counter.count = counter.count + 1;
+
+        if (counter.count == 3) {
+            dispatch_flag(ctx);
+        }
+    }
+
+    /// Get the current counter value (emit an event)
+    entry fun get_count(counter: &Counter, _ctx: &TxContext) {
+        event::emit(CountEvent { value: counter.count });
+    }
+
+    /// Create a new Counter object and transfer ownership to the sender
+    entry fun create_object(ctx: &mut TxContext) {
+        let counter = Counter {
+            id: object::new(ctx),
+            count: 0,
+        };
+
+        let owner = tx_context::sender(ctx);
+
+        transfer::public_transfer(counter, owner);
+    }
+
+    /// Create new flag object
+    fun dispatch_flag(ctx: &mut TxContext) {
+        let flag = SuinautFlag {
+            id: object::new(ctx),
+            prob: @Suinaut,
+            player: tx_context::sender(ctx),
+            msg: b"Flag-1"
+        };
+
+        transfer::transfer(flag, tx_context::sender(ctx));
+    }
+}
+`,
+  },
+  {
+    packageId:
+      "0x07064071ac373096a25faf8ea7f04eb6898286fb3eacf6a4419cb56ff877ea8f",
+    title: "Flash",
+    description: `Try to get flag while the balance of FlashLender is 0.
+
+Hint: You may deploy your own contract. You can use Bitslab IDE or Sui CLI.`,
+    code: `module Suinaut::flash{
 
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
@@ -25,7 +88,6 @@ function FlashLoanChallenge() {
     use sui::balance::{Self, Balance};
     use sui::coin::{Self, Coin};
     use sui::vec_map::{Self, VecMap};
-    use sui::event;
     use std::option;
 
 
@@ -49,9 +111,12 @@ function FlashLoanChallenge() {
         flash_lender_id: ID,
     }
 
-    struct Flag has copy, drop {
-        user: address,
-        flag: bool
+    /// Flag Struct
+    struct SuinautFlag has key {
+        id: UID,
+        prob: address,
+        player: address,
+        msg: vector<u8>
     }
 
     // creat a FlashLender
@@ -109,7 +174,7 @@ function FlashLoanChallenge() {
         transfer::public_transfer(cap, owner);
     }
 
-    // get the balance of FlashLender
+    // get  the balance of FlashLender
     public fun balance(self: &mut FlashLender, ctx: &mut TxContext) :u64 {
         *vec_map::get(&self.lender, &tx_context::sender(ctx))
     }
@@ -122,7 +187,7 @@ function FlashLoanChallenge() {
         if (vec_map::contains(&self.lender, &sender)) {
             let balance = vec_map::get_mut(&mut self.lender, &sender);
             *balance = *balance + coin::value(&coin);
-        } 
+        }
         else {
             vec_map::insert(&mut self.lender, sender, coin::value(&coin));
         };
@@ -147,92 +212,26 @@ function FlashLoanChallenge() {
     // check whether you can get the flag
     public entry fun get_flag(self: &mut FlashLender, ctx: &mut TxContext) {
         if (balance::value(&self.to_lend) == 0) {
-            event::emit(Flag { user: tx_context::sender(ctx), flag: true });
+            dispatch_flag(ctx);
         }
     }
-}
-`
 
-  const handleSubmit = async () => {
-    const url = "http://127.0.0.1:9000";
-    const payload = {
-      jsonrpc: "2.0",
-      id: 1,
-      method: "suix_queryEvents",
-      params: [
-        {
-          MoveModule: {
-            package: solutionPkgId,
-            module: module,
-            type: `${packageId}::flash::Flag`,
-          },
-        },
-        null,
-        3,
-        false,
-      ],
-    };
+    /// Create new flag object
+    fun dispatch_flag(ctx: &mut TxContext) {
+        let flag = SuinautFlag {
+            id: object::new(ctx),
+            prob: @Suinaut,
+            player: tx_context::sender(ctx),
+            msg: b"Flag-2"
+        };
 
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-      if (data?.result?.data?.[0]?.parsedJson?.flag) {
-        setMessage("Your solution is correct!");
-        setShowConfetti(true);
-        setTimeout(() => {
-          window.scrollTo(0, document.body.scrollHeight);
-        }, 100);
-      } else {
-        setMessage("Solution is not correct.");
-      }
-    } catch (error) {
-      setMessage("Solution is not correct.");
+        transfer::transfer(flag, tx_context::sender(ctx));
     }
-  };
-
-  return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#62A1F8] to-[#103870]">
-      <Header showConfetti={showConfetti} />
-      <div className="flex-grow flex flex-col items-center justify-center px-4">
-        <ChallengeDescription
-          title="Challenge 2: Flash"
-          text="Try to emit the flag while the balance of FlashLender is 0."
-        />
-        <div className="w-full max-w-4xl">
-          <SyntaxHighlighter language="rust" style={tomorrow}>
-            {code}
-          </SyntaxHighlighter>
-        </div>
-      <div className="mt-8 flex flex-col items-center gap-4 mb-14">
-        <InputBox
-          placeholder="Solution package id"
-          value={solutionPkgId}
-          onChange={(e) => setSolutionPkgId(e.target.value)}
-        />
-        <InputBox
-          placeholder="Solution module name"
-          value={module}
-          onChange={(e) => setModule(e.target.value)}
-        />
-        <RedButton onClick={handleSubmit} text="Submit Challenge" />
-      </div>
-      {message && (
-        <InfoBox
-          text={message}
-          type={message.includes("is correct") ? "success" : "error"}
-          />
-        )}
-      </div>
-      <Footer />
-    </div>
-  );
 }
-
-export default FlashLoanChallenge;
+`,
+  },
+  { title: "Simple Game", packageId: "", description: "", code: "" },
+  { title: "Coming Soon", packageId: "", description: "", code: "" },
+  { title: "Coming Soon", packageId: "", description: "", code: "" },
+  { title: "Coming Soon", packageId: "", description: "", code: "" },
+];
