@@ -3,7 +3,7 @@ import { ChallengeProps } from "../types";
 export const challengeConfig: ChallengeProps[] = [
   {
     packageId:
-      "0x9cad8fc85b0d5344eb819df975bfe5eaa21b5dabb32c6fcb10fc2b8eefc28cd0",
+      "0x35dc737f9551ef8c08e2b291e0505ad717b17bebf975a0732d3bd0a137d88ec6",
     title: "Counter",
     description: `Try to count more than 2 times.
 
@@ -75,7 +75,7 @@ Hint: Use Sui Explorer (testnet). Package ID is in the url.
   },
   {
     packageId:
-      "0x07064071ac373096a25faf8ea7f04eb6898286fb3eacf6a4419cb56ff877ea8f",
+      "0x7aa4ebb0cd7ab96ad341f1e7eb0067dcb8788ba720e9e29ce979f91fadfadbac",
     title: "Flash",
     description: `Try to get flag while the balance of FlashLender is 0.
 
