@@ -1,10 +1,16 @@
 [package]
-name = "suinaut-flash"
+name = "suinaut-monsterslayer"
 version = "0.0.1"
 
 [dependencies]
+# Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework", rev = "devnet" }
+
 MoveStdlib = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-framework/packages/move-stdlib", rev = "framework/devnet" }
 Sui = { git = "https://github.com/MystenLabs/sui", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/devnet" }
 
 [addresses]
-Suinaut = "0x0"
+ctf = "0x0"
+game = "0x0"
+
+# game = "0x5c07a66559e8ec3aafcaa5052539dddf0b032430"
+sui = "0x2"
