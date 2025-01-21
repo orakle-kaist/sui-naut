@@ -4,7 +4,7 @@ export const challengeConfig: ChallengeProps[] = [
   {
     packageId:
       "0x35dc737f9551ef8c08e2b291e0505ad717b17bebf975a0732d3bd0a137d88ec6",
-    title: "Counter",
+    title: "Hello Sui",
     description: `Try to count more than 2 times.
 
 Hint: Use Sui Explorer (testnet). Package ID is in the url.
@@ -75,11 +75,13 @@ Hint: Use Sui Explorer (testnet). Package ID is in the url.
   },
   {
     packageId:
-      "0x7aa4ebb0cd7ab96ad341f1e7eb0067dcb8788ba720e9e29ce979f91fadfadbac",
-    title: "Flash",
+      "0xe6df43445fd40fb27c2c8e6eefa2c2db38ea9c785d0823026b7e4468b0de2ca2",
+    title: "Loan",
     description: `Try to get flag while the balance of FlashLender is 0.
 
-Hint: You may deploy your own contract. You can use Bitslab IDE or Sui CLI.`,
+Hint: If you need shared object, check the Raw JSON tab in the explorer.
+Hint: You may deploy your own contract. You can use Bitslab IDE or Sui CLI.
+`,
     code: `module Suinaut::flash{
 
     use sui::transfer;
