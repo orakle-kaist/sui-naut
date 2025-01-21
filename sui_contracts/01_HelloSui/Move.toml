@@ -1,5 +1,5 @@
 [package]
-name = "suinaut-hello-sui"
+name = "suinaut_hello_sui"
 version = "0.0.1"
 
 [dependencies]
