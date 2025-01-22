@@ -1,5 +1,5 @@
 import React from "react";
-import suiLogo from "../../assets/images/sui_logo.png";
+const suiLogo = "https://github.com/orakle-kaist/sui-naut-cdn/blob/main/images/sui_logo.png?raw=true";
 
 const Footer: React.FC = () => {
   return (
