@@ -1,4 +1,4 @@
-module Suinaut::flash{
+module Suinaut::loan{
 
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
@@ -9,11 +9,11 @@ module Suinaut::flash{
     use std::option;
 
 
-    struct FLASH has drop {}
+    struct LOAN has drop {}
 
     struct FlashLender has key {
         id: UID,
-        to_lend: Balance<FLASH>,
+        to_lend: Balance<LOAN>,
         last: u64,
         lender: VecMap<address, u64>
     }
@@ -38,7 +38,7 @@ module Suinaut::flash{
     }
 
     // creat a FlashLender
-    public fun create_lend(lend_coin: Coin<FLASH>, ctx: &mut TxContext) {
+    public fun create_lend(lend_coin: Coin<LOAN>, ctx: &mut TxContext) {
         let to_lend = coin::into_balance(lend_coin);
         let id = object::new(ctx);
         let lender = vec_map::empty<address, u64>();
@@ -51,7 +51,7 @@ module Suinaut::flash{
     // get the loan
     public fun loan(
         self: &mut FlashLender, amount: u64, ctx: &mut TxContext
-    ): (Coin<FLASH>, Receipt) {
+    ): (Coin<LOAN>, Receipt) {
         let to_lend = &mut self.to_lend;
         assert!(balance::value(to_lend) >= amount, 0);
         let loan = coin::take(to_lend, amount, ctx);
@@ -61,7 +61,7 @@ module Suinaut::flash{
     }
 
     // repay coion to FlashLender
-    public fun repay(self: &mut FlashLender, payment: Coin<FLASH>) {
+    public fun repay(self: &mut FlashLender, payment: Coin<LOAN>) {
         coin::put(&mut self.to_lend, payment)
     }
 
@@ -73,7 +73,7 @@ module Suinaut::flash{
     }
 
     // init Flash
-    fun init(witness: FLASH, ctx: &mut TxContext) {
+    fun init(witness: LOAN, ctx: &mut TxContext) {
         let (cap, metadata) = coin::create_currency(
             witness, 
             2, 
@@ -99,7 +99,7 @@ module Suinaut::flash{
 
     // deposit token to FlashLender
     public entry fun deposit(
-        self: &mut FlashLender, coin: Coin<FLASH>, ctx: &mut TxContext
+        self: &mut FlashLender, coin: Coin<LOAN>, ctx: &mut TxContext
     ) {
         let sender = tx_context::sender(ctx);
         if (vec_map::contains(&self.lender, &sender)) {
