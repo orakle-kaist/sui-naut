@@ -1,56 +1,43 @@
 name: Deploy site to Walrus
 
 on:
-  workflow_dispatch:
-    branches:
-      - add-github-actions-deployment  # 현재 브랜치 추가
-
+  workflow_dispatch:  # branches 키 삭제
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/add-github-actions-deployment'  # 브랜치 조건 추가
 
     steps:
-      # 1. 레포지토리 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Node.js 설정
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  
-          cache: 'pnpm'       
+          node-version: '20'
+          cache: 'pnpm'
 
-      # 3. pnpm 설치
       - name: Install pnpm
         run: npm install -g pnpm
 
-      # 4. 의존성 설치 
       - name: Install Dependencies
         run: |
           cd sui_client
           pnpm install
 
-      # 5. 사이트 빌드
       - name: Build Site
         run: |
           cd sui_client
           pnpm run build
 
-      # 6. 빌드 결과 확인 (디버깅 용)
       - name: List Build Directory
         run: |
-          ls -la sui_client/dist/  
+          ls -la sui_client/dist/
 
-      # 7. Walrus에 배포
       - name: Deploy site to Walrus
         uses: zktx-io/walrus-ga@latest
         with:
-          site-path: './sui_client/dist/'  # Vite의 기본 빌드 출력 디렉토리
+          site-path: './sui_client/dist/'
           network: 'testnet'
-          object-id: '0xb3cb1d4980ebc68da0f1ca8ele75d19ca273374d9f09e9d025a0b4d6a7586540'
-        
-        env:
-          SUI_ADDRESS: ${{ secrets.SUI_ADDRESS }}
-          SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
+          object-id: '0
