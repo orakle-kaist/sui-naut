@@ -9,14 +9,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
+      - name: Set up Node.js + pnpm
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          package-manager: pnpm@latest  # pnpm 설치
           cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install  
 
       - name: Install pnpm
         run: npm install -g pnpm
