@@ -1,0 +1,12 @@
+{
+  "headers": {
+    "/index.html": {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-cache"
+    }
+  },
+  "routes": {
+    "/challenge/*": "/index.html",
+    "/*": "/index.html"            
+  }
+}
