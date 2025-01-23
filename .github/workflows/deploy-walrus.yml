@@ -3,7 +3,7 @@ name: Deploy site to Walrus
 on:
   push:
     branches:
-      - add-github-actions-deployment
+      - main
 
 jobs:
   deploy:
@@ -27,7 +27,7 @@ jobs:
 
       # 3. 의존성 설치
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile  # working-directory 덕분에 sui_client 내부에서 실행됨
+        run: yarn install --frozen-lockfile--prefer-offline
 
       # 4. 빌드
       - name: Build Site
