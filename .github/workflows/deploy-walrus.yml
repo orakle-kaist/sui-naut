@@ -39,8 +39,8 @@ jobs:
         with:
           site-path: "./sui_client/dist/"
           network: "testnet"
+          epochs: 5
           object-id: "0xb3cb1d4980ebc68da0f1ca8e1e75d19ca273374d9f09e9d025a0b4d6a7586540"
-          args: "--epochs 5"
         env:
           SUI_ADDRESS: ${{ secrets.SUI_ADDRESS }}
           SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
