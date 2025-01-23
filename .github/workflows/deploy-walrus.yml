@@ -2,6 +2,9 @@ name: Deploy site to Walrus
 
 on:
   workflow_dispatch:
+    branches:
+      - add-github-actions-deployment  # 현재 브랜치 추가
+
 
 jobs:
   deploy:
