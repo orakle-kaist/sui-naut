@@ -3,7 +3,7 @@ name: Deploy site to Walrus
 on:
   push:
     branches:
-      - add-github-actions-deployment  # 현재 브랜치 푸시 시 실행
+      - add-github-actions-deployment
 
 jobs:
   deploy:
@@ -13,39 +13,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Node.js + pnpm 설치
+      # 2. Node.js + Yarn 설정 (캐시 최적화)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'  # pnpm 캐시 활성화
+          node-version: "20"
+          cache: "yarn"  # Yarn 캐시 활성화 ✅
 
-      - name: Install pnpm
-        run: npm install -g pnpm@latest  # pnpm 전역 설치
-
-      # 3. 의존성 설치 및 빌드 (sui_client 디렉토리 내부)
+      # 3. sui_client 디렉토리 의존성 설치
       - name: Install Dependencies
         run: |
           cd sui_client
-          pnpm install
+          yarn install --frozen-lockfile  # Yarn 사용 ✅
 
+      # 4. 프로젝트 빌드
       - name: Build Site
         run: |
           cd sui_client
-          pnpm run build
+          yarn build  # Yarn 사용 ✅
 
-      # 4. 빌드 결과 확인
-      - name: List Build Directory
-        run: |
-          ls -la sui_client/dist/
-
-      # 5. Walrus 배포
+      # 5. 배포
       - name: Deploy site to Walrus
-        uses: zktx-io/walrus-sites-ga@v0.3.0  # 올바른 저장소명 사용
+        uses: zktx-io/walrus-sites-ga@v0.3.0
         with:
-          site-path: './sui_client/dist/'
-          network: 'testnet'
-          object-id: '0xb3cb1d4980ebc68da0f1ca8e1e75d19ca273374d9f09e9d025a0b4d6a7586540'
+          site-path: "./sui_client/dist/"
+          network: "testnet"
+          object-id: "0xb3cb1d4980ebc68da0f1ca8e1e75d19ca273374d9f09e9d025a0b4d6a7586540"
         env:
           SUI_ADDRESS: ${{ secrets.SUI_ADDRESS }}
           SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
