@@ -1,0 +1,52 @@
+name: Deploy site to Walrus
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./sui_client 
+
+    steps:
+      # 1. 레포지토리 체크아웃 (sui_client 포함)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Node.js + Yarn 설정 (캐시 경로 수정)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+          cache-dependency-path: "sui_client/yarn.lock"
+
+      # 3. 의존성 설치
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile--prefer-offline
+
+      # 4. 빌드
+      - name: Build Site
+        run: yarn build
+
+      # 5. 배포
+      - name: Deploy site to Walrus
+        uses: zktx-io/walrus-sites-ga@v0.3.0
+        with:
+          site-path: "./sui_client/dist/"
+          network: "testnet"
+          epochs: 5
+          object-id: "0xb3cb1d4980ebc68da0f1ca8e1e75d19ca273374d9f09e9d025a0b4d6a7586540"
+        env:
+          SUI_ADDRESS: ${{ vars.SUI_ADDRESS }}
+          SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
