@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -36,11 +36,11 @@ jobs:
           ls -la sui_client/dist/
 
       - name: Deploy site to Walrus
-        uses: zktx-io/walrus-ga@latest
+        uses: zktx-io/walrus-ga@v0.3.0  # 버전 수정
         with:
           site-path: './sui_client/dist/'
           network: 'testnet'
-          object-id: '0xb3cb1d4980ebc68da0f1ca8e1e75d19ca273374d9f09e9d025a0b4d6a7586540'  # 오타 수정 완료
+          object-id: '0xb3cb1d4980ebc68da0f1ca8e1e75d19ca273374d9f09e9d025a0b4d6a7586540'
         env:
           SUI_ADDRESS: ${{ secrets.SUI_ADDRESS }}
           SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
