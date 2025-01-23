@@ -9,19 +9,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Node.js + pnpm
+      # 1. 레포지토리 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Node.js + pnpm 설치
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          package-manager: pnpm@latest  # pnpm 설치
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install  
+          cache: 'pnpm'  # pnpm 캐시 활성화
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        run: npm install -g pnpm@latest  # pnpm 전역 설치
 
+      # 3. 의존성 설치 및 빌드 (sui_client 디렉토리 내부)
       - name: Install Dependencies
         run: |
           cd sui_client
@@ -32,12 +34,14 @@ jobs:
           cd sui_client
           pnpm run build
 
+      # 4. 빌드 결과 확인
       - name: List Build Directory
         run: |
           ls -la sui_client/dist/
 
+      # 5. Walrus 배포
       - name: Deploy site to Walrus
-        uses: zktx-io/walrus-ga@v0.3.0  # 버전 수정
+        uses: zktx-io/walrus-sites-ga@v0.3.0  # 올바른 저장소명 사용
         with:
           site-path: './sui_client/dist/'
           network: 'testnet'
