@@ -42,5 +42,5 @@ jobs:
           epochs: 5
           object-id: "0xb3cb1d4980ebc68da0f1ca8e1e75d19ca273374d9f09e9d025a0b4d6a7586540"
         env:
-          SUI_ADDRESS: ${{ secrets.SUI_ADDRESS }}
+          SUI_ADDRESS: ${{ vars.SUI_ADDRESS }}
           SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
