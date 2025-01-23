@@ -1,4 +1,4 @@
-module Suinaut::Counter {
+module Suinaut::HelloSui {
     use sui::object::{Self, UID};
     use sui::tx_context::{Self, TxContext};
     use sui::{event, transfer};
