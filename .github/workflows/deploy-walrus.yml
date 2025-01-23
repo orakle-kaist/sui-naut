@@ -1,13 +1,13 @@
 name: Deploy site to Walrus
 
 on:
-  workflow_dispatch:  # branches 키 삭제
+  push:
+    branches:
+      - add-github-actions-deployment  # 현재 브랜치 푸시 시 실행
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/add-github-actions-deployment'  # 브랜치 조건 추가
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -40,4 +40,7 @@ jobs:
         with:
           site-path: './sui_client/dist/'
           network: 'testnet'
-          object-id: '0
+          object-id: '0xb3cb1d4980ebc68da0f1ca8e1e75d19ca273374d9f09e9d025a0b4d6a7586540'  # 오타 수정 완료
+        env:
+          SUI_ADDRESS: ${{ secrets.SUI_ADDRESS }}
+          SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
