@@ -1,9 +1,7 @@
 name: Deploy site to Walrus
 
 on:
-  push:
-    branches:
-      - main 
+  workflow_dispatch:
 
 jobs:
   deploy:
