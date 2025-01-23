@@ -2,9 +2,9 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import ChallengeGrid from "../components/ChallengeGrid";
 
-import arrowIcon from "../assets/images/arrow.png";
-import astronautFloat from "../assets/images/astronautFloat.png";
-import astronautDesk from "../assets/images/astronautDesk.png";
+const arrowIcon = "https://github.com/orakle-kaist/sui-naut-cdn/blob/main/images/arrow.png?raw=true";
+const astronautFloat = "https://github.com/orakle-kaist/sui-naut-cdn/blob/main/images/astronautFloat.png?raw=true";
+const astronautDesk = "https://github.com/orakle-kaist/sui-naut-cdn/blob/main/images/astronautDesk.png?raw=true";
 
 function Home() {
   return (

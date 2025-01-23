@@ -2,12 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Confetti from "react-confetti";
 import { ConnectButton } from "@mysten/dapp-kit";
-import orakleLogo from "../../assets/images/orakle_logo.png";
-import homeIcon from "../../assets/images/home.png";
-import networkIcon from "../../assets/images/network.png";
-import helpIcon from "../../assets/images/help.png";
-import medalIcon from "../../assets/images/medal.png";
-
+const orakleLogo = "https://github.com/orakle-kaist/sui-naut-cdn/blob/main/images/orakle_logo.png?raw=true";
+const homeIcon = "https://github.com/orakle-kaist/sui-naut-cdn/blob/main/images/home.png?raw=true";
+const helpIcon  = "https://github.com/orakle-kaist/sui-naut-cdn/blob/main/images/help.png?raw=true";
+const medalIcon = "https://github.com/orakle-kaist/sui-naut-cdn/blob/main/images/medal.png?raw=true";
+const networkIcon = "https://github.com/orakle-kaist/sui-naut-cdn/blob/main/images/network.png?raw=true";
 interface HeaderProps {
   showConfetti?: boolean;
 }
