@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Challenge from "./pages/Challenge";
 import { challengeConfig } from "./config/challengeConfig";
@@ -17,6 +17,7 @@ function App() {
               key={props.packageId}
             />
           ))}
+          <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

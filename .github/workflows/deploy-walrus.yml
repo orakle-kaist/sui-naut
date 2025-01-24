@@ -29,9 +29,11 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile--prefer-offline
 
-      # 4. 빌드
+      # 4.빌드
       - name: Build Site
-        run: yarn build
+        run: |
+              yarn build
+              cp ws-resources.json dist/
 
       # 5. 배포
       - name: Deploy site to Walrus
@@ -40,7 +42,7 @@ jobs:
           site-path: "./sui_client/dist/"
           network: "testnet"
           epochs: 5
-          object-id: "0xb3cb1d4980ebc68da0f1ca8e1e75d19ca273374d9f09e9d025a0b4d6a7586540"
+          object-id: "0xb71d21721fbd377428194f2d5f507a7924989c232a29975782975936aae23570"
         env:
           SUI_ADDRESS: ${{ vars.SUI_ADDRESS }}
           SUI_KEYSTORE: ${{ secrets.SUI_KEYSTORE }}
