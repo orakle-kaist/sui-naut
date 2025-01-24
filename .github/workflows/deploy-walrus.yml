@@ -38,7 +38,7 @@ jobs:
       # 4. 빌드
       - name: Build Site
         run: yarn build
-             cp ../ws-resources.json dist/
+             cp ws-resources.json dist/
 
       # 5. 배포
       - name: Deploy site to Walrus
